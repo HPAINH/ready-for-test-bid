@@ -1,0 +1,1297 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Тренажёр BI-теста Авито</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap&subset=cyrillic">
+<style>
+/* Layout: a working desk — slim top nav, one wide work surface per view, Hirety-style two-pane question cards */
+:root {
+  --paper: #EEF2F4;
+  --card: #FFFFFF;
+  --ink: #13212B;
+  --muted: #5A6B77;
+  --line: #D3DCE2;
+  --accent: #0E6B58;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #DCEFE9;
+  --warn: #A86512;
+  --good: #1D7F47;
+  --good-soft: #DDF2E5;
+  --bad: #B83A32;
+  --bad-soft: #F8E1DE;
+  --mid: #A86512;
+  --mid-soft: #F6EAD6;
+  --code-bg: #F3F6F8;
+  --f-display: 'Unbounded', 'Manrope', system-ui, sans-serif;
+  --f-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E1418; --card: #151E24; --ink: #E3EBF0; --muted: #8FA1AD; --line: #27343C;
+    --accent: #3BC3A0; --accent-ink: #062019; --accent-soft: #143A31; --warn: #E2A452;
+    --good: #4CC983; --good-soft: #15352A; --bad: #F07B70; --bad-soft: #3D1F1D; --mid: #E2A452; --mid-soft: #3A2C17; --code-bg: #10181D;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E1418; --card: #151E24; --ink: #E3EBF0; --muted: #8FA1AD; --line: #27343C;
+  --accent: #3BC3A0; --accent-ink: #062019; --accent-soft: #143A31; --warn: #E2A452;
+  --good: #4CC983; --good-soft: #15352A; --bad: #F07B70; --bad-soft: #3D1F1D; --mid: #E2A452; --mid-soft: #3A2C17; --code-bg: #10181D;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--card); }
+.shell { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--card); border-bottom: 1px solid var(--line); }
+header.top .shell { display: flex; align-items: center; gap: 18px; padding-block: 10px; flex-wrap: wrap; }
+.brand { font-family: var(--f-display); font-weight: 700; font-size: 15px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+.brand .dot { width: 22px; height: 22px; border-radius: 6px; background: var(--accent); display: grid; place-items: center; color: var(--accent-ink); font-family: var(--f-mono); font-size: 11px; }
+.nav { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; min-width: 0; flex: 1; }
+.nav button { font: 600 14px var(--f-body); color: var(--muted); background: none; border: 0; padding: 8px 12px; border-radius: 8px; cursor: pointer; white-space: nowrap; }
+.nav button:hover { color: var(--ink); background: var(--paper); }
+.nav button[aria-current="page"] { color: var(--accent); background: var(--accent-soft); }
+main { padding-block: 24px 64px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(28px, 4vw, 40px); line-height: 1.1; letter-spacing: -0.02em; }
+h2 { font-family: var(--f-display); font-weight: 500; font-size: 21px; letter-spacing: -0.01em; }
+h3 { font-size: 17px; font-weight: 700; }
+p { margin: 0; }
+.eyebrow { font: 600 12px var(--f-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+.lead { color: var(--muted); font-size: 16px; max-width: 64ch; }
+.muted { color: var(--muted); }
+.mono { font-family: var(--f-mono); }
+.note { color: var(--muted); font-size: 14px; max-width: 80ch; }
+.row { display: flex; align-items: center; }
+.gap { gap: 10px; }
+.row.wrap { flex-wrap: wrap; }
+.sec { margin: 34px 0 14px; }
+.btn { font: 600 14px var(--f-body); border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: 9px 16px; border-radius: 8px; cursor: pointer; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.ghost { background: transparent; }
+.btn.sm { padding: 6px 11px; font-size: 13px; }
+.btn.big { padding: 13px 26px; font-size: 16px; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.link { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.link.danger { color: var(--bad); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pill { font: 600 11px var(--f-mono); padding: 2px 8px; border-radius: 99px; white-space: nowrap; background: var(--paper); color: var(--muted); }
+.pill.good { background: var(--good-soft); color: var(--good); }
+.pill.mid { background: var(--mid-soft); color: var(--mid); }
+.pill.bad { background: var(--bad-soft); color: var(--bad); }
+
+/* plan */
+.hero { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 28px; align-items: end; }
+.hero > div:first-child { display: flex; flex-direction: column; gap: 14px; }
+.countdown { display: grid; gap: 10px; }
+.cd { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 16px; display: flex; align-items: baseline; gap: 14px; }
+.cd .num { font: 700 30px var(--f-display); font-variant-numeric: tabular-nums; min-width: 2.6ch; color: var(--accent); }
+.cd .lbl { color: var(--muted); font-size: 14px; }
+.topics { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.topic { text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; display: flex; flex-direction: column; gap: 8px; cursor: pointer; font: inherit; color: inherit; }
+.topic:hover { border-color: var(--accent); }
+.t-head { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.t-name { font-weight: 700; }
+.t-meta { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.bar { display: block; height: 6px; background: var(--paper); border-radius: 99px; overflow: hidden; }
+.bar > span { display: block; height: 100%; background: var(--muted); border-radius: 99px; }
+.bar > span.good { background: var(--good); } .bar > span.mid { background: var(--mid); } .bar > span.bad { background: var(--bad); }
+.topics + .note { margin-top: 10px; }
+.days { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.day { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 16px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; align-items: start; }
+.day.done { opacity: 0.62; }
+.day.done .d-title { text-decoration: line-through; text-decoration-color: var(--muted); }
+.d-date { font: 600 13px var(--f-mono); color: var(--accent); padding-top: 2px; }
+.d-body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.d-title { font-weight: 700; font-size: 16px; }
+.d-goal { color: var(--muted); font-size: 14px; }
+.d-topics { display: flex; gap: 6px; flex-wrap: wrap; }
+.check { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); cursor: pointer; white-space: nowrap; }
+.check input { width: 18px; height: 18px; accent-color: var(--accent); }
+.reset { margin-top: 30px; font-size: 13px; color: var(--muted); }
+.tablewrap { overflow-x: auto; max-width: 100%; }
+table.data { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; background: var(--card); }
+table.data th, table.data td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+table.data th { font: 600 12px var(--f-mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.barcell { width: 40%; min-width: 120px; }
+
+/* theory / split views */
+.split { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 20px; align-items: start; margin-top: 16px; }
+.side { display: flex; flex-direction: column; gap: 2px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 70px); max-height: calc(100vh - 100px); overflow-y: auto; }
+.side-item { display: flex; justify-content: space-between; gap: 8px; align-items: center; text-align: left; background: none; border: 0; padding: 9px 12px; border-radius: 8px; cursor: pointer; font: 500 14px var(--f-body); color: var(--ink); }
+.side-item:hover { background: var(--card); }
+.side-item[aria-current="true"] { background: var(--card); box-shadow: inset 3px 0 0 var(--accent); font-weight: 700; }
+.minw { min-width: 0; }
+.prose { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 24px 28px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.prose h3 { margin-top: 12px; }
+.prose ul, .prose ol { margin: 0; padding-left: 22px; display: grid; gap: 4px; }
+.formula { font-family: var(--f-mono); font-size: 14px; background: var(--accent-soft); color: var(--ink); padding: 10px 14px; border-radius: 8px; overflow-x: auto; }
+.ex { border-left: 2px solid var(--line); padding-left: 12px; color: var(--muted); }
+.ex b { color: var(--ink); }
+table.mini { border-collapse: collapse; font-size: 14px; margin: 4px 0; font-variant-numeric: tabular-nums; }
+table.mini th, table.mini td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; }
+table.mini th { background: var(--paper); font-weight: 600; }
+.prose table.mini { display: block; overflow-x: auto; max-width: 100%; }
+code, pre { font-family: var(--f-mono); font-size: 13px; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+pre.code { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; overflow-x: auto; margin: 0; white-space: pre; }
+.viewhead { display: flex; flex-direction: column; gap: 6px; }
+.viewhead p { max-width: 90ch; font-size: 14px; }
+
+/* training */
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { font: 600 13px var(--f-body); border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: 6px 12px; border-radius: 99px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.session { display: flex; gap: 18px; margin: 14px 0 12px; font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; flex-wrap: wrap; }
+.session b { color: var(--ink); }
+.qcard, .codecard { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.qbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; border-bottom: 1px solid var(--line); gap: 12px; }
+.qlabel { font: 600 13px var(--f-mono); color: var(--muted); }
+.timer { font: 600 14px var(--f-mono); font-variant-numeric: tabular-nums; background: var(--good-soft); color: var(--good); padding: 4px 10px; border-radius: 8px; }
+.timer.low { background: var(--mid-soft); color: var(--mid); }
+.timer.over { background: var(--bad-soft); color: var(--bad); }
+.qgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.qtext { padding: 22px 24px; display: flex; flex-direction: column; gap: 10px; min-width: 0; border-right: 1px solid var(--line); }
+.qq { font-size: 18px; font-weight: 600; line-height: 1.45; }
+.qtype { font-size: 12px; color: var(--muted); }
+.qopts { padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.olabel { font: 600 12px var(--f-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.opt { display: flex; gap: 12px; align-items: flex-start; border: 1px solid var(--line); border-radius: 10px; padding: 11px 14px; cursor: pointer; background: var(--card); }
+.opt:hover { border-color: var(--accent); }
+.opt input { position: absolute; opacity: 0; pointer-events: none; }
+.opt .key { flex: none; width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--line); display: grid; place-items: center; font: 600 11px var(--f-mono); color: var(--muted); margin-top: 1px; }
+.opt input[type="checkbox"] + .key { border-radius: 5px; }
+.opt.sel { border-color: var(--accent); background: var(--accent-soft); }
+.opt.sel .key { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.opt.focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+.opt .otext { min-width: 0; overflow-wrap: anywhere; }
+.opt.code .otext { font-family: var(--f-mono); font-size: 13px; }
+.opt.right { border-color: var(--good); background: var(--good-soft); }
+.opt.right .key { background: var(--good); border-color: var(--good); color: var(--card); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.opt.wrong .key { background: var(--bad); border-color: var(--bad); color: var(--card); }
+.opt.locked { cursor: default; }
+.errbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--bad); color: #fff; font: 13px var(--f-mono); padding: 10px max(16px, env(safe-area-inset-left, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)); white-space: pre-wrap; }
+.hint { font-size: 12px; color: var(--muted); }
+.feedback { display: flex; flex-direction: column; gap: 10px; border-top: 1px dashed var(--line); padding-top: 14px; }
+.verdict { font-weight: 700; }
+.verdict.ok { color: var(--good); }
+.verdict.no { color: var(--bad); }
+.expl { font-size: 14px; line-height: 1.6; }
+[hidden] { display: none !important; }
+.expl ul.why { margin: 4px 0 0; padding-left: 18px; display: grid; gap: 3px; }
+.feedback .next { align-self: flex-start; }
+.empty { background: var(--card); border: 1px dashed var(--line); border-radius: 14px; padding: 32px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+
+/* code */
+.cgrid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); }
+.cstate { padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; border-right: 1px solid var(--line); min-width: 0; }
+.ceditor { padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; background: var(--paper); }
+.edhead { display: flex; justify-content: space-between; font: 600 12px var(--f-mono); color: var(--muted); gap: 8px; }
+.editor { width: 100%; min-height: 300px; resize: vertical; font: 13px/1.55 var(--f-mono); background: var(--code-bg); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; tab-size: 4; white-space: pre; overflow: auto; }
+.editor.sql { min-height: 150px; }
+.editor:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.tcase .io, .tres .io { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 10px; font-size: 12px; align-items: start; }
+.io span { color: var(--muted); padding-top: 6px; }
+.io pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; margin: 0; overflow-x: auto; white-space: pre; }
+pre.err { color: var(--bad); white-space: pre-wrap; background: var(--bad-soft); border: 0; padding: 8px 10px; border-radius: 6px; margin: 0; }
+.results { display: flex; flex-direction: column; gap: 8px; }
+.tres { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; background: var(--card); display: flex; flex-direction: column; gap: 6px; }
+.tres.ok .tname { color: var(--good); } .tres.no .tname { color: var(--bad); }
+.tname { font: 600 12px var(--f-mono); }
+.refsol { display: flex; flex-direction: column; gap: 8px; }
+.hintbox summary, .schema summary, details summary { cursor: pointer; font-weight: 600; }
+.schema { margin: 14px 0 0; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 16px; }
+.schema[open] summary { margin-bottom: 10px; }
+.sqlcard { padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; }
+.sqlmsg, .sqlout { display: flex; flex-direction: column; gap: 8px; }
+
+/* exam */
+.examstart, .examres { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 32px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+.facts { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; width: 100%; }
+.facts li { background: var(--paper); border-radius: 8px; padding: 10px 12px; font-size: 14px; color: var(--muted); }
+.facts b { display: block; color: var(--ink); font-family: var(--f-display); font-size: 18px; font-weight: 500; }
+.eprog { display: flex; gap: 14px; align-items: center; margin-bottom: 12px; font: 600 13px var(--f-mono); color: var(--muted); flex-wrap: wrap; }
+.ebar { flex: 1; min-width: 120px; height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.ebar span { display: block; height: 100%; background: var(--accent); }
+.leave { background: var(--mid-soft); color: var(--ink); border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; font-size: 14px; }
+.score { display: flex; align-items: baseline; gap: 8px; }
+.score .big { font: 700 72px/1 var(--f-display); color: var(--accent); font-variant-numeric: tabular-nums; }
+.score .of { font: 500 24px var(--f-display); color: var(--muted); }
+.examres .tablewrap { width: 100%; }
+.review { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; width: 100%; }
+.review > li { border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; border-left: 3px solid var(--good); }
+.review > li.no { border-left-color: var(--bad); }
+.review summary { font-weight: 500; font-size: 14px; }
+.review details[open] { display: flex; flex-direction: column; gap: 10px; }
+.review details[open] summary { margin-bottom: 8px; }
+.rnum { font: 600 12px var(--f-mono); color: var(--muted); margin-right: 4px; }
+ul.ans { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 4px; font-size: 14px; }
+ul.ans li { padding: 6px 10px; border-radius: 6px; background: var(--paper); overflow-wrap: anywhere; }
+ul.ans li.right { background: var(--good-soft); color: var(--good); font-weight: 600; }
+ul.ans li.wrong { background: var(--bad-soft); color: var(--bad); }
+
+@media (max-width: 820px) {
+  .hero { grid-template-columns: 1fr; }
+  .qgrid, .cgrid { grid-template-columns: 1fr; }
+  .qtext, .cstate { border-right: 0; border-bottom: 1px solid var(--line); }
+  .split { grid-template-columns: 1fr; }
+  .side { position: static; max-height: none; flex-direction: row; overflow-x: auto; }
+  .side-item { white-space: nowrap; }
+  .day { grid-template-columns: 1fr; gap: 8px; }
+  .prose { padding: 18px; }
+  .examstart, .examres { padding: 20px; }
+}
+@media (max-width: 480px) {
+  .qtext, .qopts, .cstate { padding: 16px; }
+  .qq { font-size: 16px; }
+  .brand span.full { display: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .qcard, .codecard { animation: rise 0.18s ease-out; }
+  @keyframes rise { from { transform: translateY(4px); } to { transform: none; } }
+}
+
+/* charts */
+.chart { margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 6px; max-width: 100%; }
+.chart svg { width: 100%; height: auto; display: block; font-family: var(--f-body); }
+.ch-title { fill: var(--ink); font-size: 13px; font-weight: 700; }
+.ch-txt { fill: var(--muted); font-size: 11px; }
+.ch-val { fill: var(--ink); font-size: 11px; font-weight: 600; }
+.ch-seg { fill: #10202A; font-size: 8.5px; font-weight: 600; }
+.ch-grid { stroke: var(--line); stroke-width: 1; stroke-dasharray: 2 3; }
+.ch-axis { stroke: var(--muted); stroke-width: 1; }
+.ch-line { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+.ch-dot { fill: var(--accent); }
+.duo { display: grid; grid-template-columns: minmax(0, 0.55fr) minmax(0, 1.45fr); gap: 10px; align-items: start; }
+.qtext .tablewrap table.mini { font-size: 13px; }
+.variant > li { display: grid; gap: 4px; }
+.vq { font-weight: 600; }
+.va { color: var(--good); font-weight: 600; }
+.vw { font-size: 14px; }
+#v-variant { display: flex; flex-direction: column; gap: 16px; }
+#v-variant[hidden] { display: none !important; }
+#v-variant .chart { max-width: 640px; }
+@media (max-width: 820px) { .duo { grid-template-columns: 1fr; } }
+</style>
+
+<header class="top">
+  <div class="shell">
+    <div class="brand"><span class="dot">BI</span><span class="full">Тест Авито</span></div>
+    <nav class="nav" aria-label="Разделы">
+      <button data-view="plan">План</button>
+      <button data-view="variant">Разбор варианта</button>
+      <button data-view="theory">Теория</button>
+      <button data-view="train">Тренировка</button>
+      <button data-view="exam">Пробный тест</button>
+      <button data-view="sql">SQL</button>
+    </nav>
+  </div>
+</header>
+<main class="shell">
+  <section id="v-plan"></section>
+  <section id="v-theory" hidden></section>
+  <section id="v-train" hidden></section>
+  <section id="v-exam" hidden></section>
+  <section id="v-variant" hidden></section>
+  <section id="v-sql" hidden></section>
+</main>
+<script>
+(function () {
+  function show(msg) {
+    try {
+      var bar = document.getElementById('errbar');
+      if (!bar) { bar = document.createElement('div'); bar.id = 'errbar'; bar.className = 'errbar'; document.body.appendChild(bar); }
+      bar.textContent = 'Ошибка на странице — пришли этот текст в чат: ' + msg;
+    } catch (e) {}
+  }
+  window.addEventListener('error', function (e) { show((e.message || 'неизвестная ошибка') + (e.lineno ? ' (строка ' + e.lineno + ')' : '')); });
+  window.addEventListener('unhandledrejection', function (e) { show(String(e.reason && e.reason.message || e.reason)); });
+})();
+</script>
+<script>
+const SQLDATA = {"ddl": "CREATE TABLE dim_customer (customer_id INTEGER PRIMARY KEY, name TEXT, region TEXT, segment TEXT, email TEXT);\nINSERT INTO dim_customer VALUES (1, 'Анна Петрова', 'Северо-Запад', 'B2C', 'user1@mail.ru');\nINSERT INTO dim_customer VALUES (2, 'Борис Иванов', 'Сибирь', 'B2B', 'user2@mail.ru');\nINSERT INTO dim_customer VALUES (3, 'Андрей Соколов', 'Урал', 'B2C', NULL);\nINSERT INTO dim_customer VALUES (4, 'Вера Кузнецова', 'Северо-Запад', 'B2C', 'user4@mail.ru');\nINSERT INTO dim_customer VALUES (5, 'Глеб Петров', 'Юг', 'B2C', 'user5@mail.ru');\nINSERT INTO dim_customer VALUES (6, 'Дарья Смирнова', 'Юг', 'B2B', 'user6@mail.ru');\nINSERT INTO dim_customer VALUES (7, 'Егор Попов', 'Северо-Запад', 'B2C', 'user7@mail.ru');\nINSERT INTO dim_customer VALUES (8, 'Анастасия Волкова', 'Центр', 'B2C', 'user8@mail.ru');\nINSERT INTO dim_customer VALUES (9, 'Илья Морозов', 'Юг', 'B2C', NULL);\nINSERT INTO dim_customer VALUES (10, 'Ксения Новикова', 'Центр', 'B2C', 'user10@mail.ru');\nINSERT INTO dim_customer VALUES (11, 'Лев Фёдоров', 'Северо-Запад', 'B2C', 'user11@mail.ru');\nINSERT INTO dim_customer VALUES (12, 'Мария Петренко', 'Центр', 'B2C', 'user12@mail.ru');\nINSERT INTO dim_customer VALUES (13, 'Никита Орлов', 'Сибирь', 'B2B', 'user13@mail.ru');\nINSERT INTO dim_customer VALUES (14, 'Ольга Лебедева', 'Сибирь', 'B2C', NULL);\nINSERT INTO dim_customer VALUES (15, 'Павел Козлов', 'Урал', 'B2B', 'user15@mail.ru');\nINSERT INTO dim_customer VALUES (16, 'Рита Зайцева', 'Сибирь', 'B2B', 'user16@mail.ru');\nINSERT INTO dim_customer VALUES (17, 'Сергей Павлов', 'Центр', 'B2B', 'user17@mail.ru');\nINSERT INTO dim_customer VALUES (18, 'Тимур Семёнов', 'Урал', 'B2C', 'user18@mail.ru');\nINSERT INTO dim_customer VALUES (19, 'Ульяна Голубева', 'Северо-Запад', 'B2B', 'user19@mail.ru');\nINSERT INTO dim_customer VALUES (20, 'Фёдор Виноградов', 'Центр', 'B2C', 'user20@mail.ru');\nCREATE TABLE dim_product (product_id INTEGER PRIMARY KEY, name TEXT, category TEXT, price INTEGER);\nINSERT INTO dim_product VALUES (1, 'Смартфон X', 'Электроника', 30000);\nINSERT INTO dim_product VALUES (2, 'Наушники Pro', 'Электроника', 9000);\nINSERT INTO dim_product VALUES (3, 'Ноутбук Air', 'Электроника', 80000);\nINSERT INTO dim_product VALUES (4, 'Диван Лофт', 'Мебель', 45000);\nINSERT INTO dim_product VALUES (5, 'Стул Венский', 'Мебель', 6000);\nINSERT INTO dim_product VALUES (6, 'Шкаф Классик', 'Мебель', 38000);\nINSERT INTO dim_product VALUES (7, 'Кроссовки Run', 'Одежда', 7000);\nINSERT INTO dim_product VALUES (8, 'Куртка Зима', 'Одежда', 12000);\nINSERT INTO dim_product VALUES (9, 'Шапка Вязаная', 'Одежда', 1500);\nINSERT INTO dim_product VALUES (10, 'Велосипед Трек', 'Спорт', 40000);\nINSERT INTO dim_product VALUES (11, 'Гантели 10 кг', 'Спорт', 4000);\nINSERT INTO dim_product VALUES (12, 'Палатка 3-м', 'Спорт', 15000);\nCREATE TABLE fact_orders (order_id INTEGER PRIMARY KEY, order_date TEXT, customer_id INTEGER, product_id INTEGER, qty INTEGER, amount INTEGER, status TEXT);\nINSERT INTO fact_orders VALUES (1, '2026-01-18', 13, 8, 1, 12000, 'paid');\nINSERT INTO fact_orders VALUES (2, '2026-01-06', 16, 8, 1, 12000, 'paid');\nINSERT INTO fact_orders VALUES (3, '2026-01-25', 7, 4, 1, 45000, 'paid');\nINSERT INTO fact_orders VALUES (4, '2026-01-24', 4, 12, 3, 45000, 'paid');\nINSERT INTO fact_orders VALUES (5, '2026-01-18', 7, 10, 2, 80000, 'cancelled');\nINSERT INTO fact_orders VALUES (6, '2026-01-18', 10, 6, 1, 38000, 'cancelled');\nINSERT INTO fact_orders VALUES (7, '2026-01-17', 11, 6, 2, 76000, 'cancelled');\nINSERT INTO fact_orders VALUES (8, '2026-01-09', 3, 8, 2, 24000, 'paid');\nINSERT INTO fact_orders VALUES (9, '2026-01-01', 3, 3, 2, 160000, 'cancelled');\nINSERT INTO fact_orders VALUES (10, '2026-02-08', 20, 11, 3, 12000, 'returned');\nINSERT INTO fact_orders VALUES (11, '2026-02-20', 6, 6, 3, 114000, 'paid');\nINSERT INTO fact_orders VALUES (12, '2026-02-21', 11, 12, 1, 15000, 'paid');\nINSERT INTO fact_orders VALUES (13, '2026-02-10', 4, 6, 3, 114000, 'paid');\nINSERT INTO fact_orders VALUES (14, '2026-02-27', 14, 3, 1, 80000, 'paid');\nINSERT INTO fact_orders VALUES (15, '2026-02-22', 17, 6, 1, 38000, 'paid');\nINSERT INTO fact_orders VALUES (16, '2026-02-14', 19, 12, 1, 15000, 'paid');\nINSERT INTO fact_orders VALUES (17, '2026-02-16', 13, 1, 1, 30000, 'returned');\nINSERT INTO fact_orders VALUES (18, '2026-02-08', 18, 12, 1, 15000, 'paid');\nINSERT INTO fact_orders VALUES (19, '2026-02-26', 16, 2, 2, 18000, 'cancelled');\nINSERT INTO fact_orders VALUES (20, '2026-02-02', 10, 1, 1, 30000, 'paid');\nINSERT INTO fact_orders VALUES (21, '2026-02-08', 13, 1, 2, 60000, 'paid');\nINSERT INTO fact_orders VALUES (22, '2026-02-21', 5, 2, 1, 9000, 'paid');\nINSERT INTO fact_orders VALUES (23, '2026-03-09', 17, 8, 1, 12000, 'paid');\nINSERT INTO fact_orders VALUES (24, '2026-03-07', 5, 8, 1, 12000, 'paid');\nINSERT INTO fact_orders VALUES (25, '2026-03-25', 16, 6, 3, 114000, 'cancelled');\nINSERT INTO fact_orders VALUES (26, '2026-03-10', 18, 11, 2, 8000, 'paid');\nINSERT INTO fact_orders VALUES (27, '2026-03-05', 13, 11, 1, 4000, 'paid');\nINSERT INTO fact_orders VALUES (28, '2026-03-23', 9, 12, 1, 15000, 'paid');\nINSERT INTO fact_orders VALUES (29, '2026-03-21', 19, 11, 1, 4000, 'paid');\nINSERT INTO fact_orders VALUES (30, '2026-03-22', 5, 7, 1, 7000, 'cancelled');\nINSERT INTO fact_orders VALUES (31, '2026-03-04', 4, 3, 1, 80000, 'cancelled');\nINSERT INTO fact_orders VALUES (32, '2026-03-21', 5, 3, 1, 80000, 'cancelled');\nINSERT INTO fact_orders VALUES (33, '2026-03-21', 5, 2, 1, 9000, 'paid');\nINSERT INTO fact_orders VALUES (34, '2026-03-11', 16, 5, 3, 18000, 'cancelled');\nINSERT INTO fact_orders VALUES (35, '2026-03-06', 6, 4, 3, 135000, 'paid');\nINSERT INTO fact_orders VALUES (36, '2026-03-23', 2, 7, 1, 7000, 'returned');\nINSERT INTO fact_orders VALUES (37, '2026-05-26', 13, 10, 1, 40000, 'paid');\nINSERT INTO fact_orders VALUES (38, '2026-05-13', 6, 8, 1, 12000, 'returned');\nINSERT INTO fact_orders VALUES (39, '2026-05-23', 11, 4, 1, 45000, 'returned');\nINSERT INTO fact_orders VALUES (40, '2026-05-13', 10, 1, 1, 30000, 'paid');\nINSERT INTO fact_orders VALUES (41, '2026-05-26', 16, 5, 3, 18000, 'returned');\nINSERT INTO fact_orders VALUES (42, '2026-05-18', 2, 11, 1, 4000, 'returned');\nINSERT INTO fact_orders VALUES (43, '2026-05-24', 17, 10, 3, 120000, 'paid');\nINSERT INTO fact_orders VALUES (44, '2026-05-23', 17, 5, 1, 6000, 'returned');\nINSERT INTO fact_orders VALUES (45, '2026-05-03', 11, 10, 1, 40000, 'returned');\nINSERT INTO fact_orders VALUES (46, '2026-05-03', 14, 4, 1, 45000, 'paid');\nINSERT INTO fact_orders VALUES (47, '2026-05-21', 15, 2, 1, 9000, 'paid');\nINSERT INTO fact_orders VALUES (48, '2026-05-01', 16, 10, 3, 120000, 'cancelled');\nINSERT INTO fact_orders VALUES (49, '2026-05-13', 3, 10, 3, 120000, 'cancelled');\nINSERT INTO fact_orders VALUES (50, '2026-06-22', 2, 1, 1, 30000, 'cancelled');\nINSERT INTO fact_orders VALUES (51, '2026-06-23', 13, 4, 1, 45000, 'returned');\nINSERT INTO fact_orders VALUES (52, '2026-06-26', 13, 7, 2, 14000, 'paid');\nINSERT INTO fact_orders VALUES (53, '2026-06-16', 3, 7, 1, 7000, 'paid');\nINSERT INTO fact_orders VALUES (54, '2026-06-06', 12, 1, 2, 60000, 'cancelled');\nINSERT INTO fact_orders VALUES (55, '2026-06-25', 20, 11, 1, 4000, 'cancelled');\nINSERT INTO fact_orders VALUES (56, '2026-06-23', 8, 12, 3, 45000, 'paid');\nINSERT INTO fact_orders VALUES (57, '2026-06-13', 20, 8, 2, 24000, 'paid');\nINSERT INTO fact_orders VALUES (58, '2026-06-23', 6, 7, 3, 21000, 'paid');\nINSERT INTO fact_orders VALUES (59, '2026-06-10', 5, 6, 1, 38000, 'cancelled');\nINSERT INTO fact_orders VALUES (60, '2026-07-03', 10, 10, 1, 40000, 'returned');\nINSERT INTO fact_orders VALUES (61, '2026-07-24', 4, 11, 2, 8000, 'cancelled');\nINSERT INTO fact_orders VALUES (62, '2026-07-07', 12, 3, 2, 160000, 'paid');\nINSERT INTO fact_orders VALUES (63, '2026-07-22', 9, 12, 3, 45000, 'paid');\nINSERT INTO fact_orders VALUES (64, '2026-07-11', 9, 2, 1, 9000, 'returned');\nINSERT INTO fact_orders VALUES (65, '2026-07-07', 20, 3, 3, 240000, 'paid');\nINSERT INTO fact_orders VALUES (66, '2026-07-06', 15, 5, 2, 12000, 'cancelled');\nINSERT INTO fact_orders VALUES (67, '2026-07-15', 9, 7, 2, 14000, 'returned');\nINSERT INTO fact_orders VALUES (68, '2026-07-22', 20, 12, 1, 15000, 'cancelled');\nCREATE TABLE raw_events (event_id INTEGER, user_id INTEGER, event_type TEXT, event_ts TEXT);\nINSERT INTO raw_events VALUES (1, 1, 'view', '2026-10-04 11:15');\nINSERT INTO raw_events VALUES (2, 1, 'view', '2026-10-12 20:30');\nINSERT INTO raw_events VALUES (3, 1, 'contact', '2026-10-03 16:00');\nINSERT INTO raw_events VALUES (4, 1, 'view', '2026-10-20 15:45');\nINSERT INTO raw_events VALUES (5, 2, 'search', '2026-10-18 10:00');\nINSERT INTO raw_events VALUES (6, 2, 'view', '2026-10-07 15:30');\nINSERT INTO raw_events VALUES (7, 3, 'favorite', '2026-10-06 10:45');\nINSERT INTO raw_events VALUES (8, 3, 'contact', '2026-10-02 12:15');\nINSERT INTO raw_events VALUES (9, 3, 'view', '2026-10-13 22:15');\nINSERT INTO raw_events VALUES (10, 3, 'view', '2026-10-19 20:45');\nINSERT INTO raw_events VALUES (11, 4, 'view', '2026-10-03 14:15');\nINSERT INTO raw_events VALUES (12, 4, 'contact', '2026-10-02 15:45');\nINSERT INTO raw_events VALUES (13, 5, 'search', '2026-10-05 12:15');\nINSERT INTO raw_events VALUES (14, 5, 'view', '2026-10-10 12:00');\nINSERT INTO raw_events VALUES (15, 5, 'view', '2026-10-03 10:00');\nINSERT INTO raw_events VALUES (16, 5, 'view', '2026-10-12 12:30');\nINSERT INTO raw_events VALUES (17, 6, 'search', '2026-10-02 17:45');\nINSERT INTO raw_events VALUES (18, 6, 'view', '2026-10-13 10:00');\nINSERT INTO raw_events VALUES (19, 6, 'favorite', '2026-10-08 22:30');\nINSERT INTO raw_events VALUES (20, 7, 'favorite', '2026-10-14 11:15');\nINSERT INTO raw_events VALUES (21, 7, 'view', '2026-10-14 09:30');\nINSERT INTO raw_events VALUES (22, 7, 'search', '2026-10-07 16:00');\nINSERT INTO raw_events VALUES (23, 7, 'view', '2026-10-20 16:15');\nINSERT INTO raw_events VALUES (24, 8, 'contact', '2026-10-16 15:15');\nINSERT INTO raw_events VALUES (25, 8, 'view', '2026-10-01 22:30');\nINSERT INTO raw_events VALUES (26, 8, 'search', '2026-10-07 18:00');\nINSERT INTO raw_events VALUES (27, 8, 'search', '2026-10-13 11:45');\nINSERT INTO raw_events VALUES (28, 9, 'favorite', '2026-10-12 10:30');\nINSERT INTO raw_events VALUES (29, 9, 'view', '2026-10-01 20:45');\nINSERT INTO raw_events VALUES (30, 10, 'view', '2026-10-18 16:45');\nINSERT INTO raw_events VALUES (31, 10, 'contact', '2026-10-08 16:30');\nINSERT INTO raw_events VALUES (32, 10, 'view', '2026-10-12 22:00');\nINSERT INTO raw_events VALUES (33, 11, 'favorite', '2026-10-20 10:30');\nINSERT INTO raw_events VALUES (34, 11, 'view', '2026-10-12 17:15');\nINSERT INTO raw_events VALUES (35, 11, 'view', '2026-10-14 17:00');\nINSERT INTO raw_events VALUES (36, 11, 'favorite', '2026-10-04 11:30');\nINSERT INTO raw_events VALUES (37, 11, 'view', '2026-10-10 09:15');\nINSERT INTO raw_events VALUES (38, 12, 'contact', '2026-10-20 18:45');\nINSERT INTO raw_events VALUES (39, 12, 'search', '2026-10-07 18:15');\nINSERT INTO raw_events VALUES (40, 12, 'view', '2026-10-06 14:45');\nINSERT INTO raw_events VALUES (41, 12, 'view', '2026-10-16 15:30');\nINSERT INTO raw_events VALUES (42, 12, 'view', '2026-10-18 21:45');\nINSERT INTO raw_events VALUES (43, 13, 'search', '2026-10-11 17:45');\nINSERT INTO raw_events VALUES (44, 13, 'view', '2026-10-05 19:15');\nINSERT INTO raw_events VALUES (45, 14, 'view', '2026-10-05 14:00');\nINSERT INTO raw_events VALUES (46, 14, 'view', '2026-10-19 12:45');\nINSERT INTO raw_events VALUES (47, 14, 'view', '2026-10-16 11:45');\nINSERT INTO raw_events VALUES (48, 14, 'contact', '2026-10-01 13:15');\nINSERT INTO raw_events VALUES (49, 14, 'contact', '2026-10-11 15:30');\nINSERT INTO raw_events VALUES (50, 15, 'search', '2026-10-20 19:00');\nINSERT INTO raw_events VALUES (51, 15, 'contact', '2026-10-04 13:30');\nINSERT INTO raw_events VALUES (52, 15, 'favorite', '2026-10-04 22:15');\nINSERT INTO raw_events VALUES (53, 15, 'search', '2026-10-11 22:00');\nINSERT INTO raw_events VALUES (54, 15, 'view', '2026-10-08 18:15');\nINSERT INTO raw_events VALUES (49, 14, 'contact', '2026-10-11 15:30');\nINSERT INTO raw_events VALUES (17, 6, 'search', '2026-10-02 17:45');\nINSERT INTO raw_events VALUES (7, 3, 'favorite', '2026-10-06 10:45');\nINSERT INTO raw_events VALUES (44, 13, 'view', '2026-10-05 19:15');\nINSERT INTO raw_events VALUES (40, 12, 'view', '2026-10-06 14:45');\nINSERT INTO raw_events VALUES (19, 6, 'favorite', '2026-10-08 22:30');\nINSERT INTO raw_events VALUES (42, 12, 'view', '2026-10-18 21:45');\nINSERT INTO raw_events VALUES (14, 5, 'view', '2026-10-10 12:00');\nINSERT INTO raw_events VALUES (33, 11, 'favorite', '2026-10-20 10:30');", "tasks": [{"id": "b1", "level": 1, "title": "Выручка по категориям", "text": "Посчитайте выручку (SUM(amount)) по категориям товаров для оплаченных заказов (status = 'paid'): category, revenue.", "ref": "SELECT p.category, SUM(o.amount) AS revenue FROM fact_orders o JOIN dim_product p ON p.product_id = o.product_id WHERE o.status = 'paid' GROUP BY p.category;", "ordered": false, "hint": "JOIN fact_orders с dim_product, фильтр status в WHERE, GROUP BY category."}, {"id": "b2", "level": 1, "title": "Выручка по месяцам", "text": "Выведите месяц (формат ГГГГ-ММ) и выручку по оплаченным заказам, по возрастанию месяца. В SQLite месяц: strftime('%Y-%m', order_date); в PostgreSQL было бы DATE_TRUNC.", "ref": "SELECT strftime('%Y-%m', order_date) AS month, SUM(amount) AS revenue FROM fact_orders WHERE status = 'paid' GROUP BY month ORDER BY month;", "ordered": true, "hint": "GROUP BY по выражению месяца и ORDER BY month."}, {"id": "b3", "level": 1, "title": "NULL и LIKE", "text": "Найдите клиентов без email или с фамилией, начинающейся на «Пет» (фамилия — вторая часть name): customer_id, name.", "ref": "SELECT customer_id, name FROM dim_customer WHERE email IS NULL OR name LIKE '% Пет%';", "ordered": false, "hint": "IS NULL, а не = NULL. Фамилия идёт после пробела: шаблон '% Пет%'."}, {"id": "b4", "level": 1, "title": "Товары без продаж", "text": "Найдите товары, которые ни разу не заказывали: product_id, name.", "ref": "SELECT p.product_id, p.name FROM dim_product p LEFT JOIN fact_orders o ON o.product_id = p.product_id WHERE o.order_id IS NULL;", "ordered": false, "hint": "Анти-JOIN: LEFT JOIN + WHERE o.order_id IS NULL."}, {"id": "b5", "level": 2, "title": "Сколько уникальных событий", "text": "В raw_events есть полные дубли строк. Посчитайте число уникальных событий одним числом.", "ref": "SELECT COUNT(*) FROM (SELECT DISTINCT event_id, user_id, event_type, event_ts FROM raw_events);", "ordered": false, "hint": "DISTINCT в подзапросе, затем COUNT(*)."}, {"id": "b6", "level": 2, "title": "Найти дубли", "text": "Выведите event_id и число копий для событий, которые встречаются больше одного раза.", "ref": "SELECT event_id, COUNT(*) AS copies FROM raw_events GROUP BY event_id HAVING COUNT(*) > 1;", "ordered": false, "hint": "GROUP BY ключ + HAVING COUNT(*) > 1 — стандартная проверка качества данных."}, {"id": "b7", "level": 2, "title": "Первое событие пользователя", "text": "Для каждого пользователя оставьте одно самое раннее событие: user_id, event_type, event_ts (дубли не должны давать лишних строк).", "ref": "SELECT user_id, event_type, event_ts FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY event_ts, event_id) AS rn FROM raw_events) t WHERE rn = 1;", "ordered": false, "hint": "ROW_NUMBER в подзапросе, фильтр rn = 1 снаружи — в WHERE окно использовать нельзя."}, {"id": "b8", "level": 2, "title": "Клиенты с 3+ заказами", "text": "Выведите клиентов с тремя и более оплаченными заказами: customer_id, orders.", "ref": "SELECT customer_id, COUNT(*) AS orders FROM fact_orders WHERE status = 'paid' GROUP BY customer_id HAVING COUNT(*) >= 3;", "ordered": false, "hint": "WHERE для status, HAVING для числа заказов."}, {"id": "b9", "level": 2, "title": "Средний чек по сегментам", "text": "Средний чек (средний amount оплаченного заказа) по сегментам клиентов: segment, avg_check, округлить до целых.", "ref": "SELECT c.segment, ROUND(AVG(o.amount)) AS avg_check FROM fact_orders o JOIN dim_customer c ON c.customer_id = o.customer_id WHERE o.status = 'paid' GROUP BY c.segment;", "ordered": false, "hint": "JOIN с dim_customer, AVG, ROUND."}, {"id": "b10", "level": 3, "title": "Выручка прошлого месяца (LAG)", "text": "По оплаченным заказам: month, revenue и prev_revenue — выручка предыдущей строки по месяцу (LAG). Обратите внимание, что апреля в данных нет.", "ref": "WITH m AS (SELECT strftime('%Y-%m', order_date) AS month, SUM(amount) AS revenue FROM fact_orders WHERE status = 'paid' GROUP BY month) SELECT month, revenue, LAG(revenue) OVER (ORDER BY month) AS prev_revenue FROM m ORDER BY month;", "ordered": true, "hint": "CTE с помесячной выручкой, затем LAG(revenue) OVER (ORDER BY month). Для мая prev_revenue будет мартовской — LAG считает строки, а не календарь."}, {"id": "b11", "level": 3, "title": "Накопленная выручка", "text": "month, revenue и cum_revenue — накопленная выручка с начала года по оплаченным заказам.", "ref": "WITH m AS (SELECT strftime('%Y-%m', order_date) AS month, SUM(amount) AS revenue FROM fact_orders WHERE status = 'paid' GROUP BY month) SELECT month, revenue, SUM(revenue) OVER (ORDER BY month) AS cum_revenue FROM m ORDER BY month;", "ordered": true, "hint": "SUM(...) OVER (ORDER BY month)."}, {"id": "b12", "level": 3, "title": "Лидер в категории", "text": "Для каждой категории найдите товар с наибольшей выручкой по оплаченным заказам: category, name, revenue.", "ref": "SELECT category, name, revenue FROM (SELECT p.category, p.name, SUM(o.amount) AS revenue, ROW_NUMBER() OVER (PARTITION BY p.category ORDER BY SUM(o.amount) DESC) AS rn FROM fact_orders o JOIN dim_product p ON p.product_id = o.product_id WHERE o.status = 'paid' GROUP BY p.category, p.name) t WHERE rn = 1;", "ordered": false, "hint": "Агрегат по товару + ROW_NUMBER по категории в одном подзапросе, rn = 1 снаружи."}, {"id": "b13", "level": 3, "title": "Доля категории в месяце", "text": "Для каждого месяца и категории: month, category, share — доля категории в выручке месяца (оплаченные заказы), 3 знака после запятой.", "ref": "SELECT month, category, ROUND(1.0 * revenue / SUM(revenue) OVER (PARTITION BY month), 3) AS share FROM (SELECT strftime('%Y-%m', o.order_date) AS month, p.category, SUM(o.amount) AS revenue FROM fact_orders o JOIN dim_product p ON p.product_id = o.product_id WHERE o.status = 'paid' GROUP BY month, p.category) t;", "ordered": false, "hint": "Сначала выручка по месяцу и категории, затем деление на SUM() OVER (PARTITION BY month). Умножьте на 1.0, иначе деление целочисленное."}, {"id": "b14", "level": 3, "title": "Витрина «месяц × регион»", "text": "Соберите витрину по оплаченным заказам: month, region, orders (число заказов), customers (уникальные клиенты), revenue.", "ref": "SELECT strftime('%Y-%m', o.order_date) AS month, c.region, COUNT(*) AS orders, COUNT(DISTINCT o.customer_id) AS customers, SUM(o.amount) AS revenue FROM fact_orders o JOIN dim_customer c ON c.customer_id = o.customer_id WHERE o.status = 'paid' GROUP BY month, c.region;", "ordered": false, "hint": "Типичная агрегированная витрина под дашборд: два измерения и три меры."}, {"id": "b15", "level": 3, "title": "Доля отмен по месяцам", "text": "Для каждого месяца: month и cancel_rate — доля заказов со статусом cancelled от всех заказов месяца, 3 знака.", "ref": "SELECT strftime('%Y-%m', order_date) AS month, ROUND(AVG(CASE WHEN status = 'cancelled' THEN 1.0 ELSE 0 END), 3) AS cancel_rate FROM fact_orders GROUP BY month;", "ordered": false, "hint": "AVG от флага CASE WHEN … THEN 1 ELSE 0 — это и есть доля."}]};
+</script>
+<script>
+/* Question generators: each returns {topic, kind, text, html, options, correct, expl, time} */
+const R = {
+  int(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); },
+  pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; },
+  shuffle(arr) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; },
+  sample(arr, k) { return R.shuffle(arr).slice(0, k); }
+};
+function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { [a, b] = [b, a % b]; } return a; }
+function frac(n, d) { const g = gcd(n, d) || 1; n /= g; d /= g; return d === 1 ? String(n) : n + '/' + d; }
+function dec(x, d = 2) { let s = (Math.round(x * 10 ** d) / 10 ** d).toFixed(d); if (d > 0) s = s.replace(/0+$/, '').replace(/\.$/, ''); return s.replace('.', ','); }
+function decFixed(x, d) { return (Math.round(x * 10 ** d) / 10 ** d).toFixed(d).replace('.', ','); }
+function C(n, k) { if (k < 0 || k > n) return 0; let r = 1; for (let i = 1; i <= k; i++) r = r * (n - k + i) / i; return Math.round(r); }
+function A(n, k) { let r = 1; for (let i = 0; i < k; i++) r *= (n - i); return r; }
+function fact(n) { return n <= 1 ? 1 : n * fact(n - 1); }
+function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function plural(n, one, few, many) { const m10 = n % 10, m100 = n % 100; if (m10 === 1 && m100 !== 11) return one; if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few; return many; }
+
+function single(o) {
+  const correct = String(o.correct);
+  const uniq = [];
+  for (const w of o.wrong.map(String)) if (w !== correct && !uniq.includes(w)) uniq.push(w);
+  const num = Number(correct.replace(',', '.'));
+  for (let k = 1; uniq.length < (o.n || 4) - 1 && k < 20; k++) {
+    if (!Number.isFinite(num)) break;
+    for (const c of [num + k, num - k]) { const v = String(c).replace('.', ','); if (c >= 0 && v !== correct && !uniq.includes(v) && uniq.length < (o.n || 4) - 1) uniq.push(v); }
+  }
+  const opts = R.shuffle([correct, ...uniq.slice(0, (o.n || 4) - 1)]);
+  return { topic: o.topic, kind: 'single', text: o.text, html: o.html || '', code: !!o.code, options: opts, correct: [opts.indexOf(correct)], expl: o.expl, time: o.time || 60 };
+}
+function multi(o) {
+  let st = o.statements.slice();
+  if (o.pickN) {
+    for (let tries = 0; tries < 50; tries++) {
+      const s = R.sample(o.statements, o.pickN);
+      if (s.some(x => x.ok) && s.some(x => !x.ok)) { st = s; break; }
+    }
+  }
+  st = o.keepOrder ? st : R.shuffle(st);
+  return { topic: o.topic, kind: 'multi', text: o.text, html: o.html || '', code: !!o.code, options: st.map(s => s.t), correct: st.map((s, i) => s.ok ? i : -1).filter(i => i >= 0), expl: o.expl + (o.why ? '' : '') + '<ul class="why">' + st.map(s => `<li><b>${s.ok ? 'Верно' : 'Неверно'}:</b> ${esc(s.t)}${s.why ? ' — ' + s.why : ''}</li>`).join('') + '</ul>', time: o.time || 120 };
+}
+function bank(topic, items) {
+  return () => {
+    const it = R.pick(items);
+    if (it.statements) return multi({ topic, text: it.q, html: it.html, statements: it.statements, pickN: it.pickN || 4, expl: it.expl || '', time: it.time || 120 });
+    return single({ topic, text: it.q, html: it.html, correct: it.a, wrong: it.w, expl: it.expl, time: it.time || 60, code: it.code });
+  };
+}
+
+const G = {};
+
+/* ================= SVG charts ================= */
+const PAL = ['#3A7BD5', '#E07B39', '#2E9E6A', '#9A63D3', '#D1495B', '#C79A1E', '#1FA3A8', '#8C6D5A', '#D45FA0', '#6C7A89'];
+const SIMILAR = ['#86C06F', '#5B9DDB', '#4F9E46', '#3C6FBA'];
+const CHW = 540, CHH = 300;
+function yMap(v, o, top, h) { return top + h * (1 - (v - o.yMin) / (o.yMax - o.yMin)); }
+function chartFrame(o, inner) {
+  const t = o.title ? `<text class="ch-title" x="${CHW / 2}" y="20" text-anchor="middle">${esc(o.title)}</text>` : '';
+  return `<figure class="chart"><svg viewBox="0 0 ${CHW} ${o.h || CHH}" role="img" aria-label="${esc(o.title || 'график')}">${t}${inner}</svg></figure>`;
+}
+function yAxis(o, L, T, W, H) {
+  let s = '';
+  if (o.tickLabels) {
+    o.tickLabels.forEach((lab, i) => { const y = T + H * (i + 0.5) / o.tickLabels.length; s += `<text class="ch-txt" x="${L - 6}" y="${y + 3}" text-anchor="end">${esc(lab)}</text>`; });
+  } else if (!o.noTicks) {
+    for (const v of o.ticks) { const y = yMap(v, o, T, H); s += `<line class="ch-grid" x1="${L}" x2="${L + W}" y1="${y}" y2="${y}"/><text class="ch-txt" x="${L - 6}" y="${y + 3}" text-anchor="end">${v}</text>`; }
+  }
+  s += `<line class="ch-axis" x1="${L}" x2="${L}" y1="${T}" y2="${T + H}"/><line class="ch-axis" x1="${L}" x2="${L + W}" y1="${T + H}" y2="${T + H}"/>`;
+  if (o.yLabel) s += `<text class="ch-txt" transform="translate(12 ${T + H / 2}) rotate(-90)" text-anchor="middle">${esc(o.yLabel)}</text>`;
+  if (o.xLabel) s += `<text class="ch-txt" x="${L + W / 2}" y="${(o.h || CHH) - 4}" text-anchor="middle">${esc(o.xLabel)}</text>`;
+  return s;
+}
+function lineChart(o) {
+  const L = 56, T = 34, W = CHW - L - 20, H = (o.h || CHH) - T - 44;
+  let s = yAxis(o, L, T, W, H);
+  const n = o.xs.length, x = i => L + W * (i + 0.5) / n;
+  s += `<polyline class="ch-line" points="${o.ys.map((v, i) => `${x(i)},${yMap(v, o, T, H)}`).join(' ')}"/>`;
+  o.ys.forEach((v, i) => { s += `<circle class="ch-dot" cx="${x(i)}" cy="${yMap(v, o, T, H)}" r="3"/>`; if (o.values) s += `<text class="ch-val" x="${x(i)}" y="${yMap(v, o, T, H) - 8}" text-anchor="middle">${v}</text>`; });
+  o.xs.forEach((c, i) => { s += `<text class="ch-txt" x="${x(i)}" y="${T + H + 16}" text-anchor="middle">${esc(c)}</text>`; });
+  return chartFrame(o, s);
+}
+function barChart(o) {
+  const L = o.tickLabels ? 84 : 56, T = 34, W = CHW - L - 20, H = (o.h || CHH) - T - 44;
+  let s = yAxis(o, L, T, W, H);
+  const n = o.cats.length, bw = W / n * 0.62;
+  o.vals.forEach((v, i) => {
+    const cx = L + W * (i + 0.5) / n, y = yMap(Math.max(v, o.yMin), o, T, H), base = T + H;
+    const col = Array.isArray(o.colors) ? o.colors[i % o.colors.length] : (o.colors || PAL[0]);
+    s += `<rect x="${cx - bw / 2}" y="${Math.min(y, base)}" width="${bw}" height="${Math.abs(base - y)}" fill="${col}" rx="2"/>`;
+    if (o.values) s += `<text class="ch-val" x="${cx}" y="${y - 6}" text-anchor="middle">${v}</text>`;
+    s += `<text class="ch-txt" x="${cx}" y="${T + H + 16}" text-anchor="middle">${esc(o.cats[i])}</text>`;
+  });
+  return chartFrame(o, s);
+}
+function stackedChart(o) {
+  const L = 56, T = 34, legendW = o.legend === false ? 0 : 84, W = CHW - L - 16 - legendW, H = (o.h || CHH) - T - 44;
+  let s = yAxis(o, L, T, W, H);
+  const n = o.cats.length, bw = W / n * 0.62;
+  o.cats.forEach((c, i) => {
+    const cx = L + W * (i + 0.5) / n; let acc = 0;
+    o.series.forEach((sr, k) => {
+      const v = sr.vals[i], y0 = yMap(acc, o, T, H), y1 = yMap(acc + v, o, T, H); acc += v;
+      s += `<rect x="${cx - bw / 2}" y="${y1}" width="${bw}" height="${y0 - y1}" fill="${sr.color}" stroke="var(--card)" stroke-width="0.6"/>`;
+      if (o.segLabel) { const lines = o.segLabel(sr, i, k); const mid = (y0 + y1) / 2 - (lines.length - 1) * 4.5; lines.forEach((ln, j) => { s += `<text class="ch-seg" x="${cx}" y="${mid + j * 9 + 3}" text-anchor="middle">${esc(ln)}</text>`; }); }
+    });
+    s += `<text class="ch-txt" x="${cx}" y="${T + H + 16}" text-anchor="middle">${esc(c)}</text>`;
+  });
+  if (o.legend !== false) {
+    o.series.slice().reverse().forEach((sr, k) => { const y = T + H / 2 - o.series.length * 8 + k * 16; s += `<rect x="${L + W + 14}" y="${y - 8}" width="10" height="10" fill="${sr.color}"/><text class="ch-txt" x="${L + W + 28}" y="${y + 1}">${esc(sr.name)}</text>`; });
+  }
+  return chartFrame(o, s);
+}
+function pieChart(o) {
+  const cx = 170, cy = 165, r = 110, tot = o.vals.reduce((a, b) => a + b, 0); let a0 = -Math.PI / 2, s = '';
+  o.vals.forEach((v, i) => {
+    const a1 = a0 + 2 * Math.PI * v / tot, large = a1 - a0 > Math.PI ? 1 : 0;
+    s += `<path d="M${cx},${cy} L${cx + r * Math.cos(a0)},${cy + r * Math.sin(a0)} A${r},${r} 0 ${large} 1 ${cx + r * Math.cos(a1)},${cy + r * Math.sin(a1)} Z" fill="${PAL[i % PAL.length]}" stroke="var(--card)" stroke-width="1"/>`;
+    a0 = a1;
+  });
+  o.labels.forEach((l, i) => { const y = 50 + i * 20; s += `<rect x="330" y="${y - 9}" width="10" height="10" fill="${PAL[i % PAL.length]}"/><text class="ch-txt" x="346" y="${y}">${esc(l)}</text>`; });
+  return chartFrame(Object.assign({ h: 300 }, o), s);
+}
+function dataTable(head, rows) { return `<div class="tablewrap"><table class="mini"><tr>${head.map(h => `<th>${esc(h)}</th>`).join('')}</tr>${rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</table></div>`; }
+function sqlBlock(s) { return `<pre class="code">${esc(s)}</pre>`; }
+
+/* ================= SQL для BI ================= */
+G.sDedup = () => multi({ topic: 'sql', text: 'Что из перечисленного является актуальным способом дедупликации пар (customer_id, product_id) в таблице sales?', pickN: 4, time: 150, code: true, expl: '',
+  statements: [
+    { t: 'SELECT DISTINCT customer_id, product_id FROM sales;', ok: true, why: 'классический способ убрать дубли' },
+    { t: 'SELECT customer_id, product_id FROM sales GROUP BY customer_id, product_id;', ok: true, why: 'группировка тоже оставляет уникальные пары' },
+    { t: 'SELECT * FROM sales WHERE ROW_NUMBER() OVER (PARTITION BY customer_id, product_id ORDER BY order_date) = 1;', ok: false, why: 'оконные функции нельзя использовать в WHERE — нужен подзапрос или CTE' },
+    { t: 'SELECT UNIQUE customer_id, product_id FROM sales;', ok: false, why: 'устаревший синоним DISTINCT только в Oracle, не стандарт' },
+    { t: 'SELECT * FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY customer_id, product_id ORDER BY order_date) AS rn FROM sales) t WHERE rn = 1;', ok: true, why: 'правильный способ оставить первую строку каждой пары' },
+    { t: 'SELECT DISTINCT ON (customer_id, product_id) * FROM sales ORDER BY customer_id, product_id, order_date;', ok: true, why: 'работает в PostgreSQL' },
+    { t: 'SELECT customer_id, product_id FROM sales HAVING COUNT(*) = 1;', ok: false, why: 'без GROUP BY это не работает, а с ним отбросит пары с дублями целиком' }
+  ] });
+G.sJoinResult = () => {
+  const kind = R.pick(['LEFT', 'INNER', 'RIGHT']);
+  const q = `SELECT c.customer_id, c.name, o.order_id\nFROM customers c\n${kind} JOIN orders o\n    ON c.customer_id = o.customer_id;`;
+  const ans = { LEFT: 'Все клиенты будут отображены, даже если у них нет заказов', INNER: 'Только клиенты с заказами будут отображены', RIGHT: 'Все заказы будут отображены, даже без найденного клиента' }[kind];
+  return single({ topic: 'sql', text: 'Какой результат вернёт этот запрос? (customers: customer_id PK, name; orders: order_id PK, customer_id, amount)', html: sqlBlock(q),
+    correct: ans, wrong: ['Все клиенты будут отображены, даже если у них нет заказов', 'Только клиенты с заказами будут отображены', 'Каждый клиент будет показан один раз, даже если сделал несколько заказов', 'Ошибку', 'Все заказы будут отображены, даже без найденного клиента'],
+    expl: `${kind} JOIN: ${kind === 'LEFT' ? 'все строки customers, у клиентов без заказов order_id = NULL' : kind === 'INNER' ? 'только пары с совпадением' : 'все строки orders'}. Клиент с несколькими заказами повторится столько раз, сколько у него заказов — JOIN не схлопывает строки.`, time: 120 });
+};
+G.sOrder = () => multi({ topic: 'sql', text: 'Выберите все правильные утверждения о логическом порядке выполнения SQL-запроса', html: sqlBlock('SELECT name, COUNT(*) AS project_count\nFROM employees e\nJOIN projects p ON e.id = p.employee_id\nWHERE e.salary > 50000\nGROUP BY name\nHAVING COUNT(*) > 3\nORDER BY project_count DESC;'), pickN: 4, time: 120, expl: 'Порядок: FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT.',
+  statements: [
+    { t: 'JOIN объединяет таблицы до применения фильтра WHERE', ok: true },
+    { t: 'WHERE фильтрует агрегированные данные после GROUP BY', ok: false, why: 'WHERE работает до группировки и не видит агрегатов' },
+    { t: 'HAVING фильтрует данные после применения GROUP BY', ok: true },
+    { t: 'SELECT выполняется до WHERE', ok: false, why: 'поэтому алиас из SELECT нельзя использовать в WHERE' },
+    { t: 'ORDER BY может использовать алиас project_count', ok: true, why: 'ORDER BY выполняется после SELECT' },
+    { t: 'В WHERE можно написать project_count > 3', ok: false, why: 'алиаса ещё нет, и это агрегат — только HAVING' },
+    { t: 'GROUP BY выполняется после WHERE', ok: true }
+  ] });
+G.sGroupValid = () => {
+  const v = R.pick(['bad1', 'bad2', 'ok1', 'ok2']);
+  const Q = {
+    bad1: ["SELECT customer_id, SUM(total_amount)\nFROM orders\nWHERE order_date >= '2026-01-01'\nGROUP BY order_date;", 'Ошибку', 'customer_id есть в SELECT, но не в GROUP BY и не под агрегатом — стандартный SQL (PostgreSQL, ClickHouse) вернёт ошибку.'],
+    bad2: ["SELECT region, city, COUNT(*)\nFROM customers\nGROUP BY region;", 'Ошибку', 'city не в GROUP BY и не агрегирован — ошибка.'],
+    ok1: ["SELECT customer_id, SUM(total_amount)\nFROM orders\nWHERE order_date >= '2026-01-01'\nGROUP BY customer_id;", 'Выведется сумма заказов по каждому клиенту с указанной даты', 'Каждый столбец SELECT либо в GROUP BY, либо агрегат — запрос корректен.'],
+    ok2: ["SELECT order_date, SUM(total_amount)\nFROM orders\nWHERE order_date >= '2026-01-01'\nGROUP BY order_date;", 'Выведется сумма заказов по каждой дате', 'Группировка по дате — одна строка на дату.']
+  }[v];
+  return single({ topic: 'sql', text: 'Какой результат вернёт этот запрос?', html: sqlBlock(Q[0]), correct: Q[1],
+    wrong: ['Выведется сумма заказов по каждому клиенту с указанной даты', 'Выведется сумма заказов по каждой дате', 'Выведется общая сумма заказов с указанной даты', 'Ошибку', 'Выведется число клиентов по регионам'], expl: Q[2], time: 120 });
+};
+const MONTHS = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+G.sLag = () => {
+  const y = R.pick([2024, 2025]);
+  const startM = 0, endM = R.int(5, 11);
+  let present = []; for (let m = startM; m <= endM; m++) present.push(m);
+  const gap = R.int(1, endM - 1); if (Math.random() < 0.7) present = present.filter(m => m !== gap);
+  const rev = present.map(() => R.int(10, 99) * 10);
+  const fn = R.pick(['LAG', 'LAG', 'LEAD']), k = R.pick([1, 1, 2, 3, 12]);
+  const ti = R.int(0, present.length - 1), target = present[ti];
+  const j = fn === 'LAG' ? ti - k : ti + k;
+  const ans = j >= 0 && j < present.length ? String(rev[j]) : 'NULL';
+  const calM = fn === 'LAG' ? target - k : target + k, calIdx = present.indexOf(calM);
+  const trap = calIdx >= 0 ? String(rev[calIdx]) : '0';
+  const fmt = m => `${y}-${String(m + 1).padStart(2, '0')}-01`;
+  const html = sqlBlock(`SELECT month, revenue,\n       ${fn}(revenue, ${k}) OVER (ORDER BY month) AS v\nFROM monthly_revenue;`) + `<p class="qtype">monthly_revenue — по строке на месяц, где были транзакции:</p>` + dataTable(['month', 'revenue'], present.map((m, i) => [fmt(m), rev[i]]));
+  return single({ topic: 'sql', text: `Каким будет значение v для строки ${fmt(target)}?`, html,
+    correct: ans, wrong: ['NULL', '0', trap, String(rev[Math.min(ti + 1, present.length - 1)]), String(rev[0]), String(rev.slice(0, ti).reduce((a, b) => a + b, 0)), String(rev[ti]), String(rev[rev.length - 1])],
+    expl: `${fn}(x, ${k}) берёт значение на ${k} ${plural(k, 'строку', 'строки', 'строк')} ${fn === 'LAG' ? 'выше' : 'ниже'} по порядку ORDER BY — считаются строки, а не календарные месяцы. ${present.length < endM - startM + 1 ? `Месяца ${fmt(gap)} в таблице нет, поэтому сдвиг через него «перепрыгивает». ` : ''}Если строки не существует — NULL (0 был бы только с третьим аргументом по умолчанию). Ответ: <b>${ans}</b>. В исходном тесте LAG(revenue, 12) для мая 2024 при данных с начала 2024 — тоже NULL.`, time: 180 });
+};
+G.sJoinCount = () => {
+  const U = R.pick([50, 80, 100, 200]), O = R.pick([60, 120, 150, 300]), u = R.int(5, 30), P = R.pick([40, 150, 500]);
+  const v = R.pick(['li', 'll', 'ii', 'l']);
+  const sql = { li: 'FROM users u\nLEFT JOIN orders o ON u.user_id = o.user_id\nJOIN products p ON o.product_id = p.product_id;', ll: 'FROM users u\nLEFT JOIN orders o ON u.user_id = o.user_id\nLEFT JOIN products p ON o.product_id = p.product_id;', ii: 'FROM users u\nJOIN orders o ON u.user_id = o.user_id\nJOIN products p ON o.product_id = p.product_id;', l: 'FROM users u\nLEFT JOIN orders o ON u.user_id = o.user_id;' }[v];
+  const ans = { li: O, ll: O + u, ii: O, l: O + u }[v];
+  return single({ topic: 'sql', text: `Есть таблицы: users (user_id PK) — ${U} строк; products (product_id PK) — ${P} строк; orders (order_id PK, product_id FK, user_id FK) — ${O} строк. У каждого заказа один заказчик и один товар; ${u} пользователей не сделали ни одного заказа. Сколько строк вернёт SELECT COUNT(*) AS total_rows с такими JOIN?`, html: sqlBlock('SELECT COUNT(*) AS total_rows\n' + sql),
+    correct: ans, wrong: [U, O, O + u, U + O, U * O, P, O - u].filter(x => x !== ans),
+    expl: `Каждый заказ даёт ровно одну строку (у него один пользователь и один товар), итого ${O}. LEFT JOIN users → orders добавляет ${u} строк для пользователей без заказов (с NULL). ${v === 'li' ? 'Но следующий INNER JOIN по o.product_id = NULL эти строки отбрасывает — остаётся ' + O + '. Так в исходном тесте: ответ 120.' : v === 'll' ? 'Второй LEFT JOIN их сохраняет: ' + O + ' + ' + u + ' = ' + (O + u) + '.' : v === 'ii' ? 'INNER JOIN их не добавляет вовсе.' : 'Итого ' + (O + u) + '.'} Ответ: <b>${ans}</b>.`, time: 240 });
+};
+G.sNullLike = () => {
+  const pre = R.pick(['Pet', 'Ива', 'Smi', 'Кузн']), col = R.pick(['email', 'phone']);
+  const s = (n, l) => `SELECT * FROM employees WHERE ${col} ${n} OR name LIKE '${l}';`;
+  return multi({ topic: 'sql', text: `Какой SQL-запрос вернёт всех сотрудников, у которых отсутствует ${col} или фамилия (столбец name) начинается с "${pre}"?`, keepOrder: false, time: 90, code: true, expl: 'Отсутствие значения проверяется только через IS NULL: сравнение = NULL даёт UNKNOWN и не выбирает ни одной строки. «Начинается с» — шаблон \'X%\'; \'%X\' означает «заканчивается на».',
+    statements: [
+      { t: s('IS NULL', '%' + pre), ok: false, why: `'%${pre}' — заканчивается на ${pre}` },
+      { t: s('= NULL', pre + '%'), ok: false, why: '= NULL никогда не истинно' },
+      { t: s('IS NULL', pre + '%'), ok: true },
+      { t: s('= NULL', '%' + pre), ok: false, why: 'обе ошибки сразу' }
+    ] });
+};
+G.sRank = () => {
+  let vals; do { vals = Array.from({ length: 6 }, () => R.pick([100, 90, 90, 80, 70, 70, 60])); } while (new Set(vals).size === vals.length || new Set(vals).size < 3);
+  vals.sort((a, b) => b - a);
+  const fn = R.pick(['RANK', 'DENSE_RANK', 'ROW_NUMBER']);
+  const res = []; let rank = 0, dense = 0;
+  vals.forEach((v, i) => { if (i === 0 || v !== vals[i - 1]) { rank = i + 1; dense++; } res.push({ RANK: rank, DENSE_RANK: dense, ROW_NUMBER: i + 1 }[fn]); });
+  const R2 = []; rank = 0; dense = 0; const alt = { RANK: [], DENSE_RANK: [], ROW_NUMBER: [] };
+  vals.forEach((v, i) => { if (i === 0 || v !== vals[i - 1]) { rank = i + 1; dense++; } alt.RANK.push(rank); alt.DENSE_RANK.push(dense); alt.ROW_NUMBER.push(i + 1); });
+  return single({ topic: 'sql', text: `Значения amount по убыванию: ${vals.join(', ')}. Что вернёт ${fn}() OVER (ORDER BY amount DESC) для этих строк по порядку?`,
+    correct: res.join(', '), wrong: [alt.RANK.join(', '), alt.DENSE_RANK.join(', '), alt.ROW_NUMBER.join(', '), res.map(x => x + 1).join(', '), res.slice().reverse().join(', ')],
+    expl: 'ROW_NUMBER — всегда 1, 2, 3…; RANK — одинаковым значениям одинаковый ранг с пропуском следующих (1, 2, 2, 4); DENSE_RANK — без пропусков (1, 2, 2, 3).', time: 90 });
+};
+G.sRunning = () => {
+  const vals = Array.from({ length: 5 }, () => R.int(1, 9) * 10); const k = R.int(2, 5);
+  const run = vals.slice(0, k).reduce((a, b) => a + b, 0);
+  return single({ topic: 'sql', text: `Выручка по дням (по порядку дат): ${vals.join(', ')}. Чему равен SUM(revenue) OVER (ORDER BY day) в строке дня №${k}?`,
+    correct: run, wrong: [vals[k - 1], vals.reduce((a, b) => a + b, 0), run - vals[0], Math.round(run / k)],
+    expl: `SUM с ORDER BY в окне — накопленная сумма от первой строки до текущей: ${vals.slice(0, k).join(' + ')} = <b>${run}</b>.`, time: 60 });
+};
+G.sqlBiBank = bank('sql', [
+  { q: 'Как посчитать выручку по месяцам в PostgreSQL?', a: "SELECT DATE_TRUNC('month', order_date) AS m, SUM(amount) FROM orders GROUP BY 1 ORDER BY 1", w: ["SELECT MONTH(order_date), SUM(amount) FROM orders", "SELECT order_date, SUM(amount) FROM orders GROUP BY month", "SELECT DATE_TRUNC('month', order_date), amount FROM orders GROUP BY 1"], expl: 'DATE_TRUNC обрезает дату до начала месяца; GROUP BY 1 — группировка по первому столбцу SELECT.', code: true },
+  { q: 'Что вернёт COALESCE(discount, 0) для строки, где discount = NULL?', a: '0', w: ['NULL', 'Ошибку', 'Пустую строку'], expl: 'COALESCE возвращает первый не-NULL аргумент. Так защищаются от NULL в суммах и средних.' },
+  { q: 'Что вернёт AVG(score), если значения 10, 20 и NULL?', a: '15', w: ['10', 'NULL', '30'], expl: 'Агрегаты игнорируют NULL: (10 + 20) / 2 = 15. Если NULL должен считаться нулём — AVG(COALESCE(score, 0)) = 10.' },
+  { q: 'Чем COUNT(DISTINCT user_id) отличается от COUNT(user_id)?', a: 'Считает уникальных пользователей, а не все непустые строки', w: ['Ничем', 'Считает и NULL', 'Работает только с GROUP BY'], expl: 'Для DAU/MAU нужен именно COUNT(DISTINCT).' },
+  { q: 'Нужна доля категории в выручке месяца в каждой строке. Какое выражение подходит?', a: 'SUM(amount) / SUM(SUM(amount)) OVER (PARTITION BY month)', w: ['SUM(amount) / SUM(amount)', 'amount / COUNT(*)', 'SUM(amount) OVER () / month'], expl: 'Агрегат по группе, делённый на оконную сумму по месяцу. Не забудьте привести к numeric, чтобы не было целочисленного деления.', code: true },
+  { q: 'Как отфильтровать строки по результату оконной функции rn = 1?', a: 'Обернуть запрос в подзапрос или CTE и фильтровать снаружи', w: ['Написать WHERE ROW_NUMBER() OVER (...) = 1', 'Написать HAVING rn = 1 без GROUP BY', 'Никак'], expl: 'Окна вычисляются после WHERE и HAVING. В некоторых СУБД есть QUALIFY, но универсальный способ — подзапрос.' },
+  { q: 'В чём разница между UNION и UNION ALL при сборке витрины?', a: 'UNION удаляет дубликаты строк, UNION ALL — нет и работает быстрее', w: ['Разницы нет', 'UNION ALL удаляет дубликаты', 'UNION объединяет столбцы'], expl: 'В витринах обычно UNION ALL: дедупликацию делают явно и осознанно.' },
+  { q: 'Что делает CASE WHEN amount >= 1000 THEN \'big\' ELSE \'small\' END?', a: 'Создаёт вычисляемый столбец-категорию для каждой строки', w: ['Фильтрует строки', 'Группирует строки', 'Ошибка синтаксиса'], expl: 'CASE — основной инструмент сегментации в SQL для BI.' }
+]);
+
+/* ================= Выбор визуализации ================= */
+const CHART_TYPES = ['Таблица', 'Линейный график', 'Столбчатая диаграмма', 'Круговая диаграмма', 'Точечная диаграмма (scatter)', 'Гистограмма распределения', 'Тепловая карта', 'Карточка KPI', 'Воронка', 'Нормированная (100%) столбчатая', 'Ящик с усами (box plot)', 'Карта'];
+const CHOICE = [
+  ['Менеджеру по продажам нужно раз в неделю проверять список заказов с деталями: ID заказа, клиент, сумма, статус оплаты, дата доставки.', 'Таблица', 'Нужны точные значения по отдельным записям — это таблица, а не график.', true],
+  ['Маркетолог хочет оценить, какая платформа приносит больше всего регистраций пользователей.', 'Столбчатая диаграмма', 'Сравнение категорий между собой — столбцы, отсортированные по убыванию.', true],
+  ['Директор хочет понять, как изменялась прибыль компании в течение квартала.', 'Линейный график', 'Динамика во времени — линия.', true],
+  ['Нужно показать, какую долю выручки дают 3 канала продаж в сумме 100%.', 'Круговая диаграмма', 'Доли небольшого числа частей одного целого — круговая допустима (до 4–5 сегментов).', true],
+  ['Команда хочет увидеть, как DAU менялся каждый день за последние 90 дней.', 'Линейный график', 'Длинный временной ряд — линия.', true],
+  ['Нужно сравнить выручку 12 городов за прошлый месяц.', 'Столбчатая диаграмма', 'Сравнение многих категорий — столбцы (часто горизонтальные, отсортированные). Круговая на 12 сегментов нечитаема.', true],
+  ['Финансисту нужен ежемесячный реестр платежей с номерами счетов и контрагентами для сверки.', 'Таблица', 'Сверка = точные значения построчно.', true],
+  ['Аналитик хочет проверить, связана ли сумма скидки с размером чека у тысяч заказов.', 'Точечная диаграмма (scatter)', 'Связь двух числовых показателей — scatter.', false],
+  ['Нужно понять, как распределено время доставки заказов: где основная масса и есть ли длинный хвост.', 'Гистограмма распределения', 'Форма распределения одной числовой величины — гистограмма.', false],
+  ['Нужно сравнить продажи 25 регионов по 4 кварталам и быстро найти выбросы.', 'Тепловая карта', 'Матрица «много категорий × периоды» — тепловая карта.', false],
+  ['Руководителю на главном экране нужен один показатель: выручка за вчера и изменение к прошлой неделе.', 'Карточка KPI', 'Одно число с дельтой — KPI-карточка.', false],
+  ['Нужно показать, на каком шаге оформления заказа (корзина → доставка → оплата → успех) теряются пользователи.', 'Воронка', 'Последовательные этапы с потерями — воронка.', false],
+  ['Нужно показать, как менялась структура выручки по категориям (в долях) от месяца к месяцу.', 'Нормированная (100%) столбчатая', 'Изменение долей во времени — 100% stacked: все столбцы одной высоты, сравниваются доли.', false],
+  ['Нужно сравнить разброс времени ответа поддержки в 5 командах, включая выбросы.', 'Ящик с усами (box plot)', 'Сравнение распределений между группами — box plot.', false],
+  ['Нужно показать, в каких регионах страны больше всего объявлений.', 'Карта', 'Географическая привязка — карта (choropleth); если важна точность сравнения — плюс столбцы.', false]
+];
+G.choice = () => {
+  const [q, a, e, basic] = R.pick(CHOICE);
+  const wrong = basic ? ['Таблица', 'Линейный график', 'Столбчатая диаграмма', 'Круговая диаграмма'] : R.sample(CHART_TYPES.filter(t => t !== a), 5);
+  return single({ topic: 'choice', text: q + ' Какой вид визуализации лучше всего подойдёт?', correct: a, wrong, expl: e, time: 60 });
+};
+G.choiceBank = bank('choice', [
+  { q: 'Когда круговая диаграмма уместна?', a: 'Когда частей мало (до 4–5) и важна доля от целого', w: ['Когда нужно сравнить 15 категорий', 'Для динамики по месяцам', 'Для связи двух показателей'], expl: 'Глаз плохо сравнивает углы: при многих сегментах круг нечитаем.' },
+  { q: 'Почему ось Y у столбчатой диаграммы должна начинаться с нуля?', a: 'Длина столбца кодирует значение, обрезанная ось искажает пропорции', w: ['Так требует Excel', 'Чтобы влезли подписи', 'Это необязательно ни для каких графиков'], expl: 'У линейного графика ось можно не начинать с нуля, если это оговорено, — но и тогда можно преувеличить динамику.' },
+  { q: 'Что лучше для сравнения значений 20 категорий с длинными названиями?', a: 'Горизонтальная столбчатая диаграмма, отсортированная по значению', w: ['Круговая диаграмма', 'Линейный график', 'Вертикальные столбцы в алфавитном порядке'], expl: 'Горизонтальные столбцы вмещают длинные подписи, сортировка сразу показывает лидеров.' },
+  { q: 'Как показать план и факт по 6 отделам?', a: 'Столбцы факта с отметкой плана (bullet chart) или парные столбцы', w: ['Две круговые диаграммы', 'Линейный график по отделам', 'Тепловая карта'], expl: 'Нужно сравнение с целевым уровнем внутри каждой категории.' }
+]);
+
+/* ================= Критика графиков ================= */
+const VIZ_FIX = 'Масштаб оси Y искажает динамику роста';
+G.vTrunc = () => {
+  const start = R.pick([100, 200, 500]), step = R.pick([2, 3, 5]), years = Array.from({ length: 7 }, (_, i) => 2018 + i), ys = years.map((_, i) => start + step * i);
+  const mismatch = Math.random() < 0.35;
+  const shown = ys.slice(); let bad = -1;
+  if (mismatch) { bad = R.int(2, 5); shown[bad] = ys[bad] + step * 2; }
+  const yMin = mismatch ? 0 : start, yMax = mismatch ? Math.ceil(ys[6] * 1.2 / 50) * 50 : ys[6] + step;
+  const ticks = []; const tstep = mismatch ? yMax / 5 : step * 2; for (let v = yMin; v <= yMax + 1e-9; v += tstep) ticks.push(Math.round(v));
+  const html = `<div class="duo">${dataTable(['Год', 'Значение'], years.map((y, i) => [y, ys[i]]))}${lineChart({ xs: years.map(String), ys: shown, yMin, yMax, ticks, title: 'Значение показателя', values: mismatch })}</div>`;
+  const correct = mismatch ? 'Данные графика не соответствуют данным таблицы' : VIZ_FIX;
+  return single({ topic: 'viz', text: 'Аналитик готовит визуализацию динамики роста ключевого показателя. Достоверные данные указаны в таблице. Что является верным для этой визуализации?', html,
+    correct, wrong: ['Для динамики необходимо использовать столбчатую диаграмму, а не линейный график', VIZ_FIX, 'Данные графика не соответствуют данным таблицы', 'Визуализация корректна'],
+    expl: mismatch ? `В ${years[bad]} году на графике ${shown[bad]}, а в таблице ${ys[bad]}. Всегда сверяй точки с источником.` : `Рост за 6 лет — ${dec((ys[6] / ys[0] - 1) * 100, 1)}%, но ось Y начинается с ${start}, и линия идёт из угла в угол, создавая впечатление взрывного роста. Так было в задаче 11 исходного теста. Линейный график для динамики выбран верно, данные совпадают.`, time: 120 });
+};
+G.vBarZero = () => {
+  const cats = R.sample(['Avito', 'Яндекс', 'VK', 'Telegram', 'Сайт', 'SEO'], 4), vals = cats.map(() => R.int(88, 100));
+  const yMin = 85, html = barChart({ cats, vals, yMin, yMax: 101, ticks: [85, 90, 95, 100], colors: PAL[0], title: 'Регистрации, тыс.' });
+  return single({ topic: 'viz', text: 'Что не так с этой столбчатой диаграммой?', html,
+    correct: 'Ось Y начинается не с нуля, поэтому разница между столбцами сильно преувеличена', wrong: ['Нужно использовать круговую диаграмму', 'Столбцы должны быть разного цвета', 'Ошибок нет', 'Нужен линейный график'],
+    expl: `Значения отличаются максимум на ${Math.max(...vals) - Math.min(...vals)} из ~100, а столбцы — в разы. Для столбцов ось Y всегда с нуля.`, time: 90 });
+};
+G.vAxisErr = () => {
+  const v = R.pick(['x', 'y', 'none', 'x']);
+  const qs = ['Q1', 'Q2', 'Q3', 'Q4'], order = v === 'x' ? R.pick([['Q1', 'Q3', 'Q2', 'Q4'], ['Q2', 'Q1', 'Q3', 'Q4'], ['Q1', 'Q2', 'Q4', 'Q3']]) : qs;
+  const vals = order.map(() => R.int(30, 50) * 10);
+  let o = { cats: order, vals, yMin: 0, yMax: 600, ticks: [0, 100, 200, 300, 400, 500, 600], colors: PAL[0], title: 'Квартальные продажи, млн руб.', xLabel: 'Квартал' };
+  if (v === 'y') { o.tickLabels = ['600', '500', '300', '200', '100', '0']; }
+  const ans = { x: 'Ошибка в оси X', y: 'Ошибка в оси Y', none: 'Ошибок нет' }[v];
+  return single({ topic: 'viz', text: 'На какой разметке оси допущены ошибки?', html: barChart(o), correct: ans, wrong: ['Ошибок нет', 'Ошибка в оси X', 'Ошибка в оси Y', 'Ошибки в обеих осях'],
+    expl: v === 'x' ? `Кварталы идут не по порядку (${order.join(', ')}) — время на оси X всегда упорядочено. Так было в задачах 13–20 исходного теста: Q1, Q3, Q2, Q4.` : v === 'y' ? 'Метки оси Y идут неравномерно: пропущено значение 400, шаг сбивается. Шкала обязана быть равномерной.' : 'Кварталы по порядку, шкала равномерная и с нуля.', time: 90 });
+};
+function quarterStack(similar) {
+  const regions = ['Восток', 'Запад', 'Юг', 'Север'];
+  const cols = similar ? [SIMILAR[3], SIMILAR[2], SIMILAR[1], SIMILAR[0]] : [PAL[0], PAL[1], PAL[2], PAL[3]];
+  return { regions, series: regions.map((r, k) => ({ name: r, color: cols[k], vals: [0, 1, 2, 3].map(() => R.int(6, 18) * 10) })) };
+}
+G.vColors = () => {
+  const similar = Math.random() < 0.7, st = quarterStack(similar);
+  const html = stackedChart({ cats: ['Q1', 'Q2', 'Q3', 'Q4'], series: st.series, yMin: 0, yMax: 600, ticks: [0, 200, 400, 600], title: 'Квартальные продажи по регионам' });
+  return single({ topic: 'viz', text: 'Что можно сказать про цвет визуализации?', html, correct: similar ? 'Оттенки слишком похожи' : 'Цвета хорошо различимы, проблем нет',
+    wrong: ['Цвета слишком тусклые', 'Оттенки слишком похожи', 'Цвета не соответствуют погоде регионов', 'Цвета слишком тёмные', 'Цвета хорошо различимы, проблем нет'],
+    expl: similar ? 'Две близкие зелёные и две близкие синие: соседние категории трудно отличить, особенно людям с нарушением цветовосприятия. Категориям нужны контрастные оттенки разного тона.' : 'Четыре категории разными тонами — палитра читается.', time: 60 });
+};
+G.vSuit = () => {
+  const st = quarterStack(false);
+  const html = stackedChart({ cats: ['Q1', 'Q2', 'Q3', 'Q4'], series: st.series, yMin: 0, yMax: 600, ticks: [0, 200, 400, 600], title: 'Квартальные продажи компании' });
+  const v = R.pick(['suit', 'purpose', 'share']);
+  if (v === 'suit') return single({ topic: 'viz', text: 'Насколько выбранный тип визуализации подходит для задачи «показать продажи по регионам за 4 квартала»?', html, correct: 'Этот тип визуализации хорошо показывает структуру и динамику', wrong: ['Этот тип визуализации не подходит для временных данных', 'Лучше использовать круговую диаграмму', 'Лучше использовать гистограмму'], expl: 'Столбцы с накоплением показывают и общий итог по кварталам (динамика), и вклад регионов (структура). Гистограмма — для распределения одной величины, круговая — для одного периода.', time: 60 });
+  if (v === 'purpose') return single({ topic: 'viz', text: 'Какую задачу лучше всего решает такой тип визуализации (столбцы с накоплением)?', html, correct: 'Сравнение структуры продаж в рамках каждого квартала', wrong: ['Изменение доли продаж каждого региона от общего числа продаж по кварталам', 'Поиск аномальных значений в объёмах продаж регионов', 'Анализ взаимосвязи между числом продаж и регионом'], expl: 'Накопленные столбцы показывают итог и состав каждого столбца. Сравнивать один регион между кварталами трудно — его сегменты не на общей базе. Для динамики долей — 100% stacked, для аномалий — тепловая карта или box plot.', time: 60 });
+  return single({ topic: 'viz', text: 'Руководитель просит показать, как менялась ДОЛЯ каждого региона от квартала к кварталу. Что лучше сделать с этой диаграммой?', html, correct: 'Перейти на нормированную (100%) столбчатую диаграмму', wrong: ['Оставить как есть', 'Заменить на четыре круговые диаграммы с подписями', 'Убрать легенду', 'Перейти на точечную диаграмму'], expl: 'В 100% stacked все столбцы одной высоты, и изменение доли видно по высоте сегмента.', time: 60 });
+};
+G.vLabels = () => {
+  const st = quarterStack(false);
+  const v = R.pick(['over', 'clean']);
+  const tot = i => st.series.reduce((s, sr) => s + sr.vals[i], 0);
+  const html = stackedChart({ cats: ['Q1', 'Q2', 'Q3', 'Q4'], series: st.series, yMin: 0, yMax: 600, ticks: [0, 200, 400, 600], title: 'Квартальные продажи компании', h: 320,
+    segLabel: v === 'over' ? (sr, i) => [sr.name, `Доля ${Math.round(sr.vals[i] / tot(i) * 100)}%`, `${sr.vals[i]} млн руб.`] : (sr, i) => [String(sr.vals[i])] });
+  return single({ topic: 'viz', text: 'Как можно оценить подписи на графике?', html, correct: v === 'over' ? 'Много избыточной информации в подписях' : 'Подписи лаконичны и дополняют график',
+    wrong: ['Подписи делают эту диаграмму более читабельной за счёт подробного отображения региона и доли', 'Много мелких сегментов — их нельзя подписывать напрямую', 'В подписях нельзя указывать показатели в процентах', v === 'over' ? 'Подписи лаконичны и дополняют график' : 'Много избыточной информации в подписях'],
+    expl: v === 'over' ? 'Регион уже есть в легенде, сумма читается по шкале, а доля в каждом сегменте перегружает мелкий текст. Оставьте одно значение или подпись только у итога столбца.' : 'Одно число на сегмент, регион — в легенде.', time: 60 });
+};
+G.vLegend = () => {
+  const st = quarterStack(false), v = R.pick(['ok', 'missing']);
+  const html = stackedChart({ cats: ['Q1', 'Q2', 'Q3', 'Q4'], series: st.series, yMin: 0, yMax: 600, ticks: [0, 200, 400, 600], title: 'Квартальные продажи компании', legend: v === 'ok' });
+  return single({ topic: 'viz', text: 'Как можно оценить легенду?', html, correct: v === 'ok' ? 'Легенда хорошо описывает указанные категории' : 'Легенда отсутствует — сегменты невозможно сопоставить с регионами',
+    wrong: ['Легенда перегружена', 'Легенда дублирует ось X', 'Легенда хорошо описывает указанные категории', 'Легенда отсутствует — сегменты невозможно сопоставить с регионами'],
+    expl: v === 'ok' ? 'Все 4 категории, цвета совпадают, порядок в легенде совпадает с порядком сегментов в стопке.' : 'Цвета без расшифровки ничего не значат: нужна легенда или прямые подписи сегментов.', time: 60 });
+};
+G.vCategorical = () => {
+  const people = ['Иван', 'Ольга', 'Сергей', 'Анна', 'Дмитрий'], vals = people.map(() => R.int(10, 18) * 10);
+  const html = barChart({ cats: people, vals, yMin: 0, yMax: 200, ticks: [0, 50, 100, 150, 200], tickLabels: ['Восточный', 'Западный', 'Северный'], colors: PAL[6], title: 'Продажи' });
+  return multi({ topic: 'viz', text: 'Компания анализирует продажи сотрудников за квартал. Нужна визуализация, по которой быстро видно, кто из сотрудников и какой отдел продаёт больше. Что верно для этой визуализации?', html, pickN: 4, time: 120, expl: 'Это реконструкция задачи 12 исходного теста.',
+    statements: [
+      { t: 'Неверно используются категориальные данные', ok: true, why: 'отделы стоят на оси Y вместо числовой шкалы' },
+      { t: 'Ошибкой является отсутствие подписей числовых значений', ok: true, why: 'по графику нельзя узнать, сколько продал каждый' },
+      { t: 'Для сравнения нельзя использовать одинаковый цвет столбцов', ok: false, why: 'один цвет для одной серии — норма; отделы лучше показать цветом или группировкой, но это не запрет' },
+      { t: 'Неверно выбран тип визуализации', ok: false, why: 'столбцы — правильный тип для сравнения сотрудников' },
+      { t: 'Столбцы нужно отсортировать по убыванию продаж', ok: true, why: 'так лидер виден сразу' }
+    ] });
+};
+G.vPie = () => {
+  const n = R.int(7, 10), labels = R.sample(['Москва', 'СПб', 'Казань', 'Самара', 'Пермь', 'Уфа', 'Омск', 'Тверь', 'Сочи', 'Томск', 'Курск'], n), vals = labels.map(() => R.int(5, 20));
+  return single({ topic: 'viz', text: 'Нужно сравнить выручку городов. Что не так с этой визуализацией?', html: pieChart({ labels, vals, title: 'Выручка по городам' }),
+    correct: 'Слишком много сегментов — лучше отсортированная столбчатая диаграмма', wrong: ['Нужно добавить 3D-эффект', 'Ошибок нет', 'Нужен линейный график', 'Нужно убрать легенду'],
+    expl: `${n} сегментов близкого размера: углы сравнивать трудно, цвета повторяются. Круговая — до 4–5 частей.`, time: 60 });
+};
+G.vRainbow = () => {
+  const cats = R.sample(['Авто', 'Недвижимость', 'Работа', 'Услуги', 'Электроника', 'Дом', 'Хобби'], 5), vals = cats.map(() => R.int(20, 90)).sort((a, b) => b - a);
+  return single({ topic: 'viz', text: 'Что стоит исправить в этом графике числа объявлений по категориям?', html: barChart({ cats, vals, yMin: 0, yMax: 100, ticks: [0, 25, 50, 75, 100], colors: PAL, values: true, title: 'Объявления, тыс.' }),
+    correct: 'Разные цвета не несут смысла: одну серию лучше одним цветом, акцентом выделить главное', wrong: ['Отсортировать столбцы по алфавиту', 'Заменить на круговую диаграмму', 'Убрать подписи значений', 'Начать ось Y со 20'],
+    expl: 'Цвет кодирует категорию, которая и так подписана на оси, — это шум и ложный намёк на группы.', time: 60 });
+};
+G.vMany = () => single({ topic: 'viz', text: 'Какой альтернативный тип визуализации можно предложить для сравнения регионов по кварталам, если количество регионов становится больше 20?',
+  html: stackedChart({ cats: ['Q1', 'Q2', 'Q3', 'Q4'], series: quarterStack(false).series, yMin: 0, yMax: 600, ticks: [0, 200, 400, 600], title: 'Квартальные продажи компании' }),
+  correct: 'Тепловую карту', wrong: ['Круговую диаграмму', 'Группированную столбчатую диаграмму', 'Линейные графики с легендами'],
+  expl: '20+ регионов × 4 квартала — матрица: строки-регионы, столбцы-кварталы, цвет-объём. 20 сегментов в стопке, 80 столбцов или 20 линий нечитаемы.', time: 60 });
+G.vAxisTitles = () => {
+  const v = R.pick(['units', 'dash']);
+  if (v === 'units') return single({ topic: 'viz', text: 'На графике выручки по месяцам нет ни заголовка, ни подписи оси Y, а значения от 0 до 500. Главная проблема?', correct: 'Непонятны единицы измерения: рубли, тысячи или миллионы', wrong: ['Слишком мало цвета', 'Нужно добавить легенду', 'Проблем нет'], expl: 'Единицы — в заголовке («Выручка, млн руб.») или в подписи оси.', time: 60 });
+  return single({ topic: 'viz', text: 'График «Квартальные продажи компании, млн руб.» расположен в дашборде. На оси X — Q1…Q4, у осей подписи «Квартал» и «Объём продаж, млн руб.». Что можно сказать про подписи осей?', correct: 'Подписи осей дублируют заголовок и метки и перегружают график', wrong: ['Подписи осей отсутствуют', 'Подписи осей необходимы, понятны и читаемы', 'Подписи должны быть размещены внутри сегментов'],
+    expl: 'В дашборде место дорого: метки Q1…Q4 и единицы в заголовке уже всё объясняют. Это спорный пункт исходного теста (задача 15): если единиц нет в заголовке, подпись оси Y нужна.', time: 60 });
+};
+
+/* ================= Витрины, ETL, DWH ================= */
+G.dwhBank = bank('dwh', [
+  { q: 'Что хранится в таблице фактов в схеме «звезда»?', a: 'Числовые события и меры (продажи, количество) с ключами измерений', w: ['Описательные атрибуты клиентов', 'Справочник товаров', 'Настройки дашборда'], expl: 'Факт — события и меры; измерения — описательные атрибуты (кто, что, где, когда).' },
+  { q: 'Чем «снежинка» отличается от «звезды»?', a: 'Измерения нормализованы и разбиты на несколько связанных таблиц', w: ['В снежинке нет таблицы фактов', 'Снежинка всегда быстрее', 'Звезда хранит только агрегаты'], expl: 'Звезда проще и быстрее для BI-запросов, снежинка экономит место и избегает дублирования атрибутов.' },
+  { q: 'Что такое гранулярность (grain) таблицы фактов?', a: 'Что описывает одна строка: например, одна позиция заказа за день', w: ['Число столбцов', 'Частота обновления дашборда', 'Размер таблицы в ГБ'], expl: 'Грейн фиксируют первым при проектировании витрины: от него зависят все агрегаты.' },
+  { q: 'Клиент переехал в другой город. Нужно сохранить, где он жил на момент старых заказов. Какой тип SCD?', a: 'SCD Type 2: новая строка с периодом действия', w: ['SCD Type 1: перезаписать значение', 'SCD Type 0: ничего не делать', 'Удалить старую строку'], expl: 'Type 2 хранит историю (valid_from, valid_to, is_current); Type 1 перезаписывает без истории.' },
+  { q: 'Чем ETL отличается от ELT?', a: 'В ELT данные сначала загружают в хранилище, а трансформируют уже внутри него', w: ['Ничем', 'ELT не загружает данные', 'ETL не трансформирует данные'], expl: 'ELT типичен для облачных и колоночных хранилищ: трансформации — SQL внутри DWH (dbt).' },
+  { q: 'Зачем инкрементальная загрузка?', a: 'Чтобы загружать только новые и изменённые данные, а не всю таблицу заново', w: ['Чтобы удалить старые данные', 'Чтобы увеличить объём хранилища', 'Чтобы обойти права доступа'], expl: 'Обычно по полю updated_at или по партициям дат: быстрее и дешевле полной перезагрузки.' },
+  { q: 'Что значит «идемпотентный» ETL-процесс?', a: 'Повторный запуск за тот же период даёт тот же результат без дублей', w: ['Он работает без ошибок', 'Он запускается раз в сутки', 'Он не использует SQL'], expl: 'Достигается через перезапись партиции (DELETE + INSERT, MERGE), а не простой INSERT.' },
+  { q: 'Что такое витрина данных (data mart)?', a: 'Подготовленный набор таблиц под конкретную задачу или отдел', w: ['Сырая копия продовой базы', 'Визуальный дашборд', 'Резервная копия'], expl: 'Витрина — агрегированные и очищенные данные, из которых строят дашборды.' },
+  { q: 'Чем OLAP отличается от OLTP?', a: 'OLAP — аналитические запросы по большим объёмам, OLTP — много коротких транзакций', w: ['Ничем', 'OLTP — для отчётов', 'OLAP — для записи заказов'], expl: 'Продовая база (OLTP) и хранилище (OLAP) оптимизированы под разное.' },
+  { q: 'Почему ClickHouse быстро считает агрегаты?', a: 'Он колоночный: читает с диска только нужные столбцы и хорошо их сжимает', w: ['Он хранит всё в Excel', 'Он не поддерживает SQL', 'Он строчный, как PostgreSQL'], expl: 'Колоночные хранилища — стандарт для BI-нагрузки.' },
+  { q: 'Что такое суррогатный ключ?', a: 'Технический ключ хранилища вместо бизнес-идентификатора', w: ['Ключ шифрования', 'Пароль к базе', 'Внешний ключ продовой системы'], expl: 'Нужен, например, в SCD Type 2: у одного клиента несколько версий строки.' },
+  { q: 'В витрине после JOIN выручка выросла в 2 раза. Самая вероятная причина?', a: 'JOIN размножил строки: у ключа справа несколько совпадений', w: ['Ошибка округления', 'Неверный цвет графика', 'Задержка загрузки'], expl: 'Проверяй уникальность ключа справа перед JOIN и сравнивай COUNT(*) до и после.' },
+  { q: 'Какую проверку качества данных стоит ставить на загрузку витрины?', a: 'Число строк, дубли по ключу, NULL в обязательных полях, сверка сумм с источником', w: ['Только цвет дашборда', 'Ничего, если загрузка прошла без ошибок', 'Только размер файла'], expl: 'Загрузка «без ошибок» не гарантирует корректные данные.' },
+  { q: 'Зачем партиционировать таблицу фактов по дате?', a: 'Чтобы запросы за период читали только нужные партиции, а загрузку можно было перезаписывать по дням', w: ['Чтобы увеличить число столбцов', 'Чтобы скрыть данные', 'Это нужно только для картинок'], expl: 'Партиции ускоряют фильтры по дате и упрощают инкрементальные загрузки.' },
+  { q: 'Что такое материализованное представление?', a: 'Запрос, результат которого сохранён физически и обновляется по расписанию или событию', w: ['Обычное представление без хранения', 'Таблица логов', 'Экспорт в CSV'], expl: 'Используют для тяжёлых агрегатов под дашборды.' }
+]);
+
+/* ================= Дашборды ================= */
+G.dashBank = bank('dash', [
+  { q: 'Где на дашборде размещать главные KPI?', a: 'Вверху слева: туда смотрят первым', w: ['Внизу справа', 'В отдельной вкладке', 'Мелким шрифтом в подвале'], expl: 'Глаз читает экран сверху слева по Z/F-паттерну.' },
+  { q: 'Что такое «правило 5 секунд» для дашборда?', a: 'Главный вывод должен считываться за несколько секунд', w: ['Дашборд должен загружаться 5 секунд', 'На дашборде 5 графиков', 'Обновление раз в 5 секунд'], expl: 'Если ответ на главный вопрос не виден сразу, дашборд перегружен.' },
+  { q: 'Сколько графиков стоит держать на одном экране дашборда?', a: 'Немного, обычно до 6–9 блоков, каждый отвечает на свой вопрос', w: ['Как можно больше', 'Ровно один', 'Не меньше 20'], expl: 'Больше — в отдельные вкладки или детализацию.' },
+  { q: 'Как использовать цвет на дашборде?', a: 'Единая палитра: один цвет — одна сущность на всех графиках, яркий — только для акцента', w: ['Каждому графику свою палитру', 'Как можно больше ярких цветов', 'Только красный и зелёный'], expl: 'Одинаковые цвета для одних сущностей снижают нагрузку; красно-зелёная пара плохо различима для дальтоников.' },
+  { q: 'Зачем 3D-эффекты на графиках?', a: 'Не нужны: искажают восприятие размеров и мешают читать значения', w: ['Делают график точнее', 'Обязательны в отчётах', 'Улучшают читаемость подписей'], expl: 'Перспектива меняет видимые размеры сегментов.' },
+  { q: 'Каким должен быть заголовок графика на дашборде?', a: 'Отвечать, что показано и в каких единицах, а лучше формулировать вывод', w: ['Технически: «chart_1»', 'Не нужен', 'Только название таблицы в базе'], expl: '«Выручка, млн руб.» или «Выручка выросла на 12% за квартал».' },
+  { q: 'Что такое drill-down?', a: 'Переход от агрегата к детализации по клику, например страна → регион → город', w: ['Удаление данных', 'Экспорт в PDF', 'Сортировка по алфавиту'], expl: 'Позволяет держать верхний уровень простым.' },
+  { q: 'Пользователь дашборда — руководитель. Что показать в первую очередь?', a: 'Несколько ключевых метрик с динамикой и сравнением с планом', w: ['Сырые таблицы на 10 000 строк', 'Все доступные метрики', 'SQL-запросы витрины'], expl: 'Дашборд проектируют от вопросов пользователя, а не от доступных данных.' },
+  { q: 'Чем дашборд отличается от отчёта?', a: 'Дашборд — для регулярного мониторинга ключевых метрик, отчёт — для разового разбора вопроса', w: ['Ничем', 'Отчёт всегда интерактивный', 'Дашборд всегда в Excel'], expl: 'Отсюда разные требования к объёму и детализации.' },
+  { q: 'Какие BI-инструменты чаще всего встречаются в российских компаниях?', a: 'Yandex DataLens, Apache Superset, Redash', w: ['Только Excel', 'Matplotlib и seaborn', 'Jupyter Notebook'], expl: 'В требованиях буткемпа для продуктовых аналитиков Авито упоминает Redash. Принципы визуализации одинаковы во всех инструментах.' }
+]);
+
+const TOPICS = {
+  sql: { name: 'SQL для BI', gens: ['sDedup', 'sJoinResult', 'sOrder', 'sGroupValid', 'sLag', 'sLag', 'sJoinCount', 'sJoinCount', 'sNullLike', 'sRank', 'sRunning', 'sqlBiBank', 'sqlBiBank'] },
+  choice: { name: 'Выбор графика', gens: ['choice', 'choice', 'choice', 'choiceBank'] },
+  viz: { name: 'Критика графиков', gens: ['vTrunc', 'vBarZero', 'vAxisErr', 'vColors', 'vSuit', 'vLabels', 'vLegend', 'vCategorical', 'vPie', 'vRainbow', 'vMany', 'vAxisTitles'] },
+  dwh: { name: 'Витрины и ETL', gens: ['dwhBank'] },
+  dash: { name: 'Дашборды', gens: ['dashBank'] }
+};
+function genTopic(t) { return G[R.pick(TOPICS[t].gens)](); }
+const EXAM_LAYOUT = ['sDedup', 'sJoinResult', 'sOrder', 'sGroupValid', 'sLag', 'sJoinCount', 'sNullLike', 'choice', 'choice', 'choice', 'vTrunc', 'vCategorical', 'vColors', 'vSuit', 'vAxisTitles', 'vAxisErr', 'vLegend', 'vLabels', 'vMany', 'vSuit'];
+
+
+</script>
+<script>
+const THEORY = {
+  sql: {
+    lead: 'Задачи 1–7 теста: дедупликация, JOIN, порядок выполнения, GROUP BY, оконные функции, NULL и LIKE. Таймеры здесь самые длинные — до 7 минут.',
+    html: `
+<h3>Порядок выполнения</h3>
+<div class="formula">FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → окна → ORDER BY → LIMIT</div>
+<ul><li>WHERE работает до группировки и не видит агрегатов и алиасов SELECT.</li><li>HAVING фильтрует группы после GROUP BY.</li><li>Оконные функции считаются после WHERE/HAVING, поэтому фильтровать по ним можно только снаружи — в подзапросе или CTE.</li><li>ORDER BY видит алиасы.</li></ul>
+<h3>GROUP BY: когда запрос упадёт</h3>
+<p>Каждый столбец SELECT — либо в GROUP BY, либо под агрегатом. Иначе ошибка.</p>
+<pre class="code">SELECT customer_id, SUM(total_amount)
+FROM orders
+GROUP BY order_date;   -- ошибка: customer_id не в GROUP BY</pre>
+<h3>Дедупликация</h3>
+<table class="mini"><tr><th>Способ</th><th>Работает?</th></tr>
+<tr><td>SELECT DISTINCT a, b</td><td>да</td></tr><tr><td>GROUP BY a, b</td><td>да</td></tr>
+<tr><td>ROW_NUMBER() … в подзапросе, снаружи rn = 1</td><td>да — оставляет целые строки</td></tr>
+<tr><td>DISTINCT ON (a, b) — PostgreSQL</td><td>да</td></tr>
+<tr><td>WHERE ROW_NUMBER() OVER (…) = 1</td><td>нет — окно в WHERE запрещено</td></tr>
+<tr><td>SELECT UNIQUE</td><td>нет — устаревший синоним из Oracle</td></tr></table>
+<h3>Сколько строк вернёт JOIN</h3>
+<ul><li>JOIN не схлопывает строки: клиент с 3 заказами даст 3 строки.</li><li>LEFT JOIN добавляет строки без пары (с NULL справа).</li><li>Следующий INNER JOIN по столбцу из NULL-строк их отбрасывает.</li></ul>
+<p class="ex">users 100, orders 120, у каждого заказа один пользователь и товар. users LEFT JOIN orders JOIN products → пользователи без заказов отсеиваются вторым JOIN: <b>120</b>.</p>
+<h3>Оконные функции</h3>
+<ul><li>LAG(x, k) / LEAD(x, k) — значение на k <b>строк</b> выше/ниже, не календарных периодов. Нет строки → NULL (0 только с третьим аргументом).</li><li>ROW_NUMBER: 1, 2, 3, 4; RANK: 1, 2, 2, 4; DENSE_RANK: 1, 2, 2, 3.</li><li>SUM(x) OVER (ORDER BY d) — накопленная сумма; SUM(x) OVER (PARTITION BY g) — итог группы в каждой строке.</li></ul>
+<p class="ex">LAG(revenue, 12) для мая 2024, если данные с января 2024: 12 строк назад нет → <b>NULL</b>.</p>
+<h3>NULL и LIKE</h3>
+<ul><li>Только IS NULL / IS NOT NULL; «= NULL» никогда не истинно.</li><li>'Pet%' — начинается с Pet; '%Pet' — заканчивается; '%Pet%' — содержит.</li><li>Агрегаты игнорируют NULL; COALESCE(x, 0) подставляет значение.</li></ul>`
+  },
+  choice: {
+    lead: 'Задачи 8–10: по описанию задачи выбрать тип визуализации. Отвечай на вопрос «что пользователь сравнивает или ищет?».',
+    html: `
+<table class="mini"><tr><th>Задача пользователя</th><th>Визуализация</th></tr>
+<tr><td>Точные значения по записям, сверка, список с деталями</td><td>Таблица</td></tr>
+<tr><td>Динамика во времени</td><td>Линейный график</td></tr>
+<tr><td>Сравнение категорий, рейтинг</td><td>Столбчатая (отсортированная; горизонтальная при длинных подписях)</td></tr>
+<tr><td>Доля частей целого, частей мало (до 4–5)</td><td>Круговая или кольцевая</td></tr>
+<tr><td>Изменение долей во времени</td><td>Нормированная (100%) столбчатая</td></tr>
+<tr><td>Итог и состав по периодам</td><td>Столбцы с накоплением</td></tr>
+<tr><td>Связь двух числовых показателей</td><td>Точечная (scatter)</td></tr>
+<tr><td>Распределение одной величины</td><td>Гистограмма; сравнение распределений — box plot</td></tr>
+<tr><td>Много категорий × периоды</td><td>Тепловая карта</td></tr>
+<tr><td>Один ключевой показатель</td><td>Карточка KPI с дельтой</td></tr>
+<tr><td>Этапы с потерями</td><td>Воронка</td></tr>
+<tr><td>План и факт</td><td>Bullet chart или столбцы с отметкой цели</td></tr></table>
+<p class="ex">В тесте: список заказов с деталями → <b>таблица</b>; какая платформа даёт больше регистраций → <b>столбчатая</b>; прибыль за квартал по времени → <b>линейный</b>.</p>`
+  },
+  viz: {
+    lead: 'Задачи 11–20 — половина теста: найти ошибку на готовом графике. Проверяй по чек-листу сверху вниз.',
+    html: `
+<h3>Чек-лист разбора графика</h3>
+<ol>
+<li><b>Данные.</b> Совпадают ли точки с таблицей-источником?</li>
+<li><b>Тип.</b> Подходит ли он под задачу (динамика, сравнение, доля, состав)?</li>
+<li><b>Ось X.</b> Время упорядочено? Категории отсортированы, если важен рейтинг?</li>
+<li><b>Ось Y.</b> У столбцов — с нуля. Шаг равномерный. Есть числа или подписи значений.</li>
+<li><b>Масштаб.</b> Обрезанная ось у линии преувеличивает рост (рост на 12% выглядит как взлёт).</li>
+<li><b>Цвет.</b> Категории — контрастные тона, не два оттенка зелёного и два синего. Одна серия — один цвет.</li>
+<li><b>Легенда.</b> Есть, если серий несколько; порядок совпадает со стопкой.</li>
+<li><b>Подписи.</b> Не дублируют легенду и шкалу; в мелких сегментах — минимум текста.</li>
+<li><b>Заголовок и единицы.</b> Понятно, что и в чём измерено.</li>
+</ol>
+<h3>Что было в тесте</h3>
+<ul><li>Линия 100→112 на оси от 100 до 112 → масштаб оси Y искажает динамику.</li><li>Продажи сотрудников с отделами на оси Y → неверно используются категориальные данные, нет числовых подписей.</li><li>Стопка с двумя зелёными и двумя синими → оттенки слишком похожи.</li><li>Кварталы Q1, Q3, Q2, Q4 → ошибка в оси X.</li><li>В сегментах «регион + доля + сумма» → избыточная информация.</li><li>Больше 20 регионов → тепловая карта.</li><li>Столбцы с накоплением решают задачу «структура продаж в рамках каждого квартала».</li></ul>
+<h3>Спорный момент</h3>
+<p>Подписи осей «Квартал» и «Объём продаж, млн руб.» на графике в дашборде: по канонам дашбордов их считают перегрузкой, если заголовок и метки уже всё объясняют. Но если единиц нигде больше нет, подпись оси Y нужна.</p>`
+  },
+  dwh: {
+    lead: 'Витрины и ETL в требованиях указаны «плюсом»: на тесте их может не быть, но на техническом интервью спросят.',
+    html: `
+<h3>Схема «звезда»</h3>
+<p>В центре таблица фактов (события и меры: заказы, суммы, количество), вокруг — измерения (клиент, товар, дата, регион). «Снежинка» — то же, но измерения нормализованы.</p>
+<pre class="code">fact_orders(order_id, date_key, customer_key, product_key, qty, amount)
+dim_customer(customer_key, name, region, segment)
+dim_product(product_key, name, category, price)</pre>
+<h3>Ключевые понятия</h3>
+<ul><li><b>Grain</b> — что описывает одна строка факта. Фиксируется первым.</li><li><b>SCD Type 1</b> — перезаписать атрибут; <b>Type 2</b> — новая версия строки с valid_from, valid_to.</li><li><b>Суррогатный ключ</b> — технический ключ хранилища.</li><li><b>Витрина</b> — агрегированный набор под задачу или отдел; из неё строят дашборд.</li><li><b>OLTP</b> — продовая база, короткие транзакции; <b>OLAP</b> — аналитика по большим объёмам (ClickHouse, Greenplum, Vertica).</li></ul>
+<h3>ETL / ELT</h3>
+<ul><li>ETL — трансформация до загрузки; ELT — загрузка сырого, трансформация SQL внутри хранилища (dbt).</li><li>Инкрементальная загрузка — только новое и изменённое (по updated_at или партиции).</li><li>Идемпотентность — перезапуск за период не плодит дубли: перезаписывай партицию.</li><li>Оркестрация — Airflow: DAG из задач с зависимостями и расписанием.</li></ul>
+<h3>Проверки качества</h3>
+<p>COUNT(*) до и после JOIN (размножение строк), дубли по ключу (GROUP BY … HAVING COUNT(*) &gt; 1), NULL в обязательных полях, сверка сумм с источником, свежесть данных.</p>`
+  },
+  dash: {
+    lead: 'Принципы, по которым оценивают дашборды на интервью и в портфолио.',
+    html: `
+<ul>
+<li>Начни с пользователя и его 3–5 вопросов, а не с доступных данных.</li>
+<li>Главные KPI — вверху слева, крупно, с динамикой и сравнением с планом или прошлым периодом.</li>
+<li>Правило 5 секунд: главный вывод считывается сразу.</li>
+<li>До 6–9 блоков на экран; детали — в drill-down и отдельные вкладки.</li>
+<li>Единая палитра: одна сущность — один цвет на всех графиках. Акцентный цвет — только для важного.</li>
+<li>Без 3D, теней и декоративных фонов.</li>
+<li>Заголовки отвечают «что и в каких единицах», лучше — формулируют вывод.</li>
+<li>Фильтры (период, регион) — в одном месте вверху и влияют на все графики.</li>
+<li>Подпись «данные на дату» и источник.</li>
+</ul>
+<h3>Для портфолио</h3>
+<p>Требования отмечают дашборды в портфолио как плюс. Соберите 1–2 дашборда в DataLens или Superset на открытых данных (маркетплейс, объявления) и опишите для каждого: кто пользователь, на какие вопросы отвечает, какие решения по нему принимают.</p>`
+  }
+};
+
+/* Разбор варианта: 20 вопросов из присланного теста */
+const VARIANT = [
+  { n: 1, q: 'Актуальные способы дедупликации (несколько)', a: 'SELECT DISTINCT …; SELECT … GROUP BY customer_id, product_id', w: 'ROW_NUMBER() в WHERE запрещён — окно считается после WHERE. SELECT UNIQUE — устаревший синоним из Oracle.' },
+  { n: 2, q: 'customers LEFT JOIN orders — какой результат', a: 'Все клиенты будут отображены, даже если у них нет заказов', w: 'Вариант «каждый заказ будет показан один раз» формально тоже верен — у заказа один клиент. Но вопрос проверяет смысл LEFT JOIN, поэтому выбирай его.' },
+  { n: 3, q: 'Логический порядок выполнения (несколько)', a: 'JOIN объединяет таблицы до WHERE; HAVING фильтрует после GROUP BY', w: 'WHERE не видит агрегатов; SELECT выполняется после WHERE.' },
+  { n: 4, q: "SELECT customer_id, SUM(total_amount) … GROUP BY order_date", a: 'Ошибку', w: 'customer_id нет в GROUP BY и он не под агрегатом.' },
+  { n: 5, q: 'LAG(revenue, 12) для строки 2024-05-01, данные с начала 2024, апреля нет', a: 'null', w: '12 строк назад не существует. Отсутствие апреля не важно — даже с ним строк было бы 4.' },
+  { n: 6, q: 'users LEFT JOIN orders JOIN products: максимум строк', a: '120', w: 'У каждого заказа один пользователь и один товар → 120 строк. Пользователи без заказов отсеиваются INNER JOIN по NULL product_id.' },
+  { n: 7, q: 'Нет email или фамилия начинается с «Pet» (несколько)', a: "WHERE email IS NULL OR name LIKE 'Pet%'", w: 'Верный только один вариант, хотя тип вопроса «несколько». = NULL не работает, \'%Pet\' — «заканчивается на».' },
+  { n: 8, q: 'Список заказов с деталями раз в неделю', a: 'Таблица', w: 'Нужны точные значения построчно.' },
+  { n: 9, q: 'Какая платформа приносит больше регистраций', a: 'Столбчатая диаграмма', w: 'Сравнение категорий.' },
+  { n: 10, q: 'Как менялась прибыль в течение квартала', a: 'Линейный график', w: 'Динамика во времени.' },
+  { n: 11, q: 'Линия 100→112, ось Y от 100 до 112', a: 'Масштаб оси Y искажает динамику роста', w: 'Данные совпадают с таблицей, линейный график для динамики верен; рост 12% выглядит как взлёт из-за обрезанной оси.' },
+  { n: 12, q: 'SalesPro: столбцы сотрудников, на оси Y — отделы (несколько)', a: 'Неверно используются категориальные данные; ошибкой является отсутствие подписей числовых значений', w: 'Тип (столбцы) для сравнения сотрудников верный. Одинаковый цвет — не ошибка сам по себе. Средняя уверенность: составители могли считать верным и пункт про цвет, раз нужно сравнивать отделы.' },
+  { n: 13, q: 'Цвет: две зелёные и две синие категории', a: 'Оттенки слишком похожи', w: 'Север/Запад и Юг/Восток трудно различить.' },
+  { n: 14, q: 'Подходит ли тип (столбцы с накоплением по кварталам)', a: 'Этот тип визуализации хорошо показывает структуру и динамику', w: 'Итог по кварталам — динамика, сегменты — структура.' },
+  { n: 15, q: 'Подписи осей (график в дашборде)', a: 'Подписи осей перегружают график', w: 'Самый спорный вопрос. Логика составителей — уточнение «в дашборде»: заголовок «Квартальные продажи» и метки Q1–Q4 уже всё объясняют. Если бы уточнения не было, ответом были бы «необходимы и понятны».' },
+  { n: 16, q: 'На какой разметке оси ошибки', a: 'Ошибка в оси X', w: 'Кварталы идут Q1, Q3, Q2, Q4. Шкала Y равномерная.' },
+  { n: 17, q: 'Как оценить легенду', a: 'Легенда хорошо описывает указанные категории', w: 'Все 4 региона, порядок совпадает со стопкой. Подписи в сегментах её дублируют, но такого варианта нет.' },
+  { n: 18, q: 'Как оценить подписи на графике', a: 'Много избыточной информации в подписях', w: 'Регион, доля и сумма в каждом сегменте — регион уже в легенде, сумма читается по шкале.' },
+  { n: 19, q: 'Альтернатива при 20+ регионах', a: 'Тепловую карту', w: 'Матрица регионы × кварталы.' },
+  { n: 20, q: 'Какую задачу лучше решает такой барчарт', a: 'Сравнение структуры продаж в рамках каждого квартала', w: 'Долю региона между кварталами сравнивать трудно — сегменты не на общей базе (для этого 100% stacked).' }
+];
+
+</script>
+<script>
+/* ================= state ================= */
+const KEY = 'avito-bi-trainer-v1';
+function loadState() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+const S = Object.assign({ stats: {}, mistakes: [], days: {}, exams: [], sqlDone: {}, pyDone: {}, code: {}, sqlCode: {} }, loadState());
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* storage unavailable */ } }
+function record(topic, ok, secs) {
+  (S.stats[topic] = S.stats[topic] || []).push({ ok: ok ? 1 : 0, t: Math.round(secs) });
+  if (S.stats[topic].length > 40) S.stats[topic] = S.stats[topic].slice(-40);
+  save();
+}
+function topicStat(t) {
+  const a = (S.stats[t] || []).slice(-20);
+  if (!a.length) return { n: 0, acc: 0, time: 0, total: (S.stats[t] || []).length };
+  return { n: a.length, acc: a.reduce((s, x) => s + x.ok, 0) / a.length, time: a.reduce((s, x) => s + x.t, 0) / a.length, total: (S.stats[t] || []).length };
+}
+function topicState(t) {
+  const st = topicStat(t);
+  if (st.n === 0) return { cls: 'idle', label: 'не начато' };
+  if (st.n >= 15 && st.acc >= 0.85) return { cls: 'good', label: 'готово' };
+  if (st.acc >= 0.7) return { cls: 'mid', label: 'почти' };
+  return { cls: 'bad', label: 'тренировать' };
+}
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
+const mmss = s => { const neg = s < 0; s = Math.abs(Math.round(s)); return (neg ? '+' : '') + String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); };
+
+/* ================= navigation ================= */
+const VIEWS = ['plan', 'variant', 'theory', 'train', 'exam', 'sql'];
+let activeTimer = null;
+function stopTimer() { if (activeTimer) { clearInterval(activeTimer); activeTimer = null; } }
+function go(view, opts = {}) {
+  if (!VIEWS.includes(view)) view = 'plan';
+  if (view !== 'exam' && EX.running) { EX.pendingNav = { view, opts }; showExamLeave(); return; }
+  stopTimer();
+  $$('.nav button').forEach(b => b.setAttribute('aria-current', b.dataset.view === view ? 'page' : 'false'));
+  $$('main > section').forEach(s => { s.hidden = s.id !== 'v-' + view; });
+  try { ({ plan: renderPlan, variant: renderVariant, theory: renderTheory, train: renderTrain, exam: renderExam, sql: renderSql })[view](opts); } catch (e) { const sec = $('#v-' + view); if (sec) sec.innerHTML = '<div class=\"empty\"><p class=\"verdict no\">Раздел не загрузился: ' + esc(e.message) + '</p><p class=\"note\">Пришли этот текст в чат.</p></div>'; }
+  window.scrollTo(0, 0);
+}
+
+/* ================= plan ================= */
+const TEST_DATE = new Date('2026-11-06T00:00:00');
+const DEADLINE = new Date('2026-11-05T23:59:00');
+const DAYS = [
+  { id: 'd1', dates: '25–26 окт', title: 'SQL: JOIN, порядок выполнения, GROUP BY', topics: ['sql'], goal: 'Число строк любого JOIN называешь без запуска; знаешь, когда GROUP BY даст ошибку.', extra: 'sql' },
+  { id: 'd2', dates: '27–28 окт', title: 'Окна, дедупликация, даты', topics: ['sql'], goal: 'LAG/LEAD, ROW_NUMBER, RANK и дедупликация без ошибок. В песочнице решены задачи 1–10.', extra: 'sql' },
+  { id: 'd3', dates: '29 окт', title: 'Выбор визуализации', topics: ['choice'], goal: 'Тип графика по описанию задачи — за 20 секунд.' },
+  { id: 'd4', dates: '30–31 окт', title: 'Критика графиков', topics: ['viz'], goal: 'Чек-лист из 9 пунктов наизусть, точность от 85%.' },
+  { id: 'd5', dates: '1–2 ноя', title: 'Витрины, ETL, дашборды', topics: ['dwh', 'dash'], goal: 'Звезда, grain, SCD, инкрементальная загрузка; принципы дашборда. Песочница: задачи 11–15.', extra: 'sql' },
+  { id: 'd6', dates: '3–4 ноя', title: 'Дашборд в портфолио', topics: [], goal: 'Собрать 1–2 дашборда в DataLens или Superset на открытых данных и добавить ссылку в резюме — это плюс в требованиях.' },
+  { id: 'd7', dates: '5 ноя', title: 'Дедлайн заявки', topics: [], goal: 'Резюме загружено, форма отправлена.' },
+  { id: 'd8', dates: '5–6 ноя', title: 'Генеральная репетиция', topics: [], goal: 'Пробный тест на время: 18 из 20 и больше.', extra: 'exam' },
+  { id: 'd9', dates: '6–9 ноя', title: 'Тест и видеоинтервью', topics: [], goal: 'Начать тест в первый же день, видеоинтервью — после 2–3 репетиций на запись.' }
+];
+function daysLeft(d) { return Math.ceil((d - new Date()) / 86400000); }
+function renderPlan() {
+  const el = $('#v-plan');
+  const dl = daysLeft(DEADLINE), tl = daysLeft(TEST_DATE);
+  const best = S.exams.length ? Math.max(...S.exams.map(e => e.score)) : null;
+  const totalAns = Object.values(S.stats).reduce((s, a) => s + a.length, 0);
+  const readyTopics = Object.keys(TOPICS).filter(t => topicState(t).cls === 'good').length;
+  el.innerHTML = `
+  <div class="hero">
+    <div>
+      <p class="eyebrow">Avito Analyst Bootcamp · BI-разработчик</p>
+      <h1>Тренажёр к тесту</h1>
+      <p class="lead">20 задач в формате Hirety: 7 по SQL, 3 на выбор визуализации и 10 на разбор готовых графиков. Задачи и графики генерируются заново при каждом подходе, поэтому заучить ответы не выйдет — только метод.</p>
+      <div class="row gap">
+        <button class="btn primary" data-go="train" data-topic="all">Тренироваться</button>
+        <button class="btn" data-go="exam">Пробный тест</button>
+        <button class="btn ghost" data-go="variant">Разбор варианта</button>
+      </div>
+    </div>
+    <div class="countdown">
+      <div class="cd"><span class="num">${dl > 0 ? dl : 0}</span><span class="lbl">${plural(Math.max(dl, 0), 'день', 'дня', 'дней')} до дедлайна заявки · 5 ноя</span></div>
+      <div class="cd"><span class="num">${tl > 0 ? tl : 0}</span><span class="lbl">${plural(Math.max(tl, 0), 'день', 'дня', 'дней')} до теста · ~6 ноя</span></div>
+      <div class="cd"><span class="num">${best === null ? '—' : best + '/20'}</span><span class="lbl">лучший пробный тест · цель 18</span></div>
+    </div>
+  </div>
+
+  <h2 class="sec">Готовность по темам <span class="muted">· ${totalAns} ответов, ${readyTopics} из ${Object.keys(TOPICS).length} тем готовы</span></h2>
+  <div class="topics">
+    ${Object.entries(TOPICS).map(([t, v]) => { const st = topicStat(t), s = topicState(t); return `
+      <button class="topic" data-go="train" data-topic="${t}">
+        <span class="t-head"><span class="t-name">${v.name}</span><span class="pill ${s.cls}">${s.label}</span></span>
+        <span class="bar"><span style="width:${Math.round(st.acc * 100)}%" class="${s.cls}"></span></span>
+        <span class="t-meta">${st.n ? `${Math.round(st.acc * 100)}% верно · ${Math.round(st.time)} с/задача · ${st.total} всего` : 'ещё нет ответов'}</span>
+      </button>`; }).join('')}
+  </div>
+  <p class="note">Тема «готово» — от 15 ответов и 85% верных среди последних 20. Ошибки собираются в отдельную тренировку.${S.mistakes.length ? ` Сейчас в ней ${S.mistakes.length} ${plural(S.mistakes.length, 'задача', 'задачи', 'задач')}: <button class="link" data-go="train" data-topic="mistakes">разобрать ошибки</button>.` : ''}</p>
+
+  <h2 class="sec">План по дням</h2>
+  <ol class="days">
+    ${DAYS.map(d => { const done = !!S.days[d.id]; return `
+      <li class="day ${done ? 'done' : ''}">
+        <div class="d-date">${d.dates}</div>
+        <div class="d-body">
+          <div class="d-title">${d.title}</div>
+          <div class="d-goal">${d.goal}</div>
+          ${d.topics.length ? `<div class="d-topics">${d.topics.map(t => { const s = topicState(t); return `<span class="pill ${s.cls}">${TOPICS[t].name}: ${s.label}</span>`; }).join('')}</div>` : ''}
+          <div class="row gap wrap">
+            ${d.topics.map(t => `<button class="btn sm" data-go="train" data-topic="${t}">${TOPICS[t].name}</button>`).join('')}
+            ${d.topics.length ? `<button class="btn sm ghost" data-go="theory" data-topic="${d.topics[0]}">Теория</button>` : ''}
+            ${d.extra === 'sql' ? `<button class="btn sm" data-go="sql">SQL-песочница · ${Object.keys(S.sqlDone).length}/${SQLDATA.tasks.length}</button>` : ''}
+            ${d.extra === 'exam' ? '<button class="btn sm" data-go="exam">Пробный тест</button>' : ''}
+          </div>
+        </div>
+        <label class="check"><input type="checkbox" id="day-${d.id}" data-day="${d.id}" ${done ? 'checked' : ''}> <span>сделано</span></label>
+      </li>`; }).join('')}
+  </ol>
+  ${S.exams.length ? `<h2 class="sec">История пробных тестов</h2>
+  <div class="tablewrap"><table class="data"><tr><th>Дата</th><th>Баллы</th><th>Время</th>${EXAM_BLOCKS.map(b => `<th>${b.name}</th>`).join('')}</tr>
+  ${S.exams.slice().reverse().map(e => `<tr><td>${e.date}</td><td><b>${e.score}/20</b></td><td>${mmss(e.secs)}</td>${EXAM_BLOCKS.map((b, i) => `<td>${e.blocks[i]}/${b.to - b.from + 1}</td>`).join('')}</tr>`).join('')}</table></div>` : ''}
+  <div class="reset"><button class="link" id="reset-btn">Сбросить прогресс</button><span id="reset-confirm" hidden> Удалить все ответы и историю? <button class="link danger" id="reset-yes">Да, сбросить</button> <button class="link" id="reset-no">Отмена</button></span></div>`;
+  $$('[data-day]', el).forEach(c => c.addEventListener('change', () => { S.days[c.dataset.day] = c.checked; if (!c.checked) delete S.days[c.dataset.day]; save(); renderPlan(); }));
+  $('#reset-btn').onclick = () => { $('#reset-confirm').hidden = false; };
+  $('#reset-no').onclick = () => { $('#reset-confirm').hidden = true; };
+  $('#reset-yes').onclick = () => { for (const k of ['stats', 'days', 'sqlDone', 'pyDone', 'code', 'sqlCode']) S[k] = {}; S.mistakes = []; S.exams = []; save(); renderPlan(); };
+}
+
+/* ================= theory ================= */
+let theoryTopic = 'sql';
+function renderTheory(opts = {}) {
+  if (opts.topic && THEORY[opts.topic]) theoryTopic = opts.topic;
+  const el = $('#v-theory');
+  el.innerHTML = `
+  <div class="split">
+    <nav class="side" aria-label="Темы">
+      ${Object.keys(THEORY).map(t => `<button class="side-item" aria-current="${t === theoryTopic}" data-th="${t}"><span>${TOPICS[t].name}</span><span class="pill ${topicState(t).cls}">${topicState(t).label}</span></button>`).join('')}
+    </nav>
+    <article class="prose">
+      <h2>${TOPICS[theoryTopic].name}</h2>
+      <p class="lead">${THEORY[theoryTopic].lead}</p>
+      ${THEORY[theoryTopic].html}
+      <div class="row gap"><button class="btn primary" data-go="train" data-topic="${theoryTopic}">Тренировать: ${TOPICS[theoryTopic].name}</button></div>
+    </article>
+  </div>`;
+  $$('[data-th]', el).forEach(b => b.onclick = () => { theoryTopic = b.dataset.th; renderTheory(); });
+}
+
+/* ================= question card ================= */
+function questionCard(q, { label, onAnswer, mode }) {
+  const wrap = document.createElement('div');
+  wrap.className = 'qcard';
+  const multi = q.kind === 'multi';
+  wrap.innerHTML = `
+    <div class="qbar"><span class="qlabel">${label}</span><span class="timer" aria-live="off">${mmss(q.time)}</span></div>
+    <div class="qgrid">
+      <div class="qtext">
+        <p class="qq">${esc(q.text)}</p>
+        <p class="qtype">${multi ? 'Несколько правильных' : 'Один правильный'} · ${TOPICS[q.topic] ? TOPICS[q.topic].name : ''}</p>
+        ${q.html || ''}
+      </div>
+      <div class="qopts">
+        <p class="olabel">${multi ? 'Выберите все верные варианты' : 'Выберите один вариант'}</p>
+        <div class="opts" role="${multi ? 'group' : 'radiogroup'}">
+          ${q.options.map((o, i) => `<label class="opt ${q.code ? 'code' : ''}"><input type="${multi ? 'checkbox' : 'radio'}" name="opt" value="${i}"><span class="key">${i + 1}</span><span class="otext">${esc(o)}</span></label>`).join('')}
+        </div>
+        <div class="row gap qactions"><button class="btn primary submit" disabled>Ответить</button><span class="hint">Клавиши 1–${q.options.length} и Enter</span></div>
+        <div class="feedback" hidden></div>
+      </div>
+    </div>`;
+  const t0 = performance.now();
+  let answered = false;
+  const timerEl = $('.timer', wrap), submit = $('.submit', wrap);
+  const inputs = $$('input', wrap);
+  const paint = () => inputs.forEach(x => x.closest('.opt').classList.toggle('sel', x.checked));
+  inputs.forEach(i => {
+    i.addEventListener('change', () => { submit.disabled = !inputs.some(x => x.checked); paint(); });
+    i.addEventListener('focus', () => i.closest('.opt').classList.add('focus'));
+    i.addEventListener('blur', () => i.closest('.opt').classList.remove('focus'));
+  });
+  function finish(timeout) {
+    if (answered) return; answered = true; stopTimer();
+    const secs = (performance.now() - t0) / 1000;
+    const chosen = inputs.filter(i => i.checked).map(i => +i.value);
+    const ok = chosen.length === q.correct.length && chosen.every(c => q.correct.includes(c));
+    inputs.forEach(i => { i.disabled = true; const lab = i.closest('.opt'); lab.classList.add('locked'); lab.classList.remove('sel'); const v = +i.value; if (q.correct.includes(v)) lab.classList.add('right'); else if (i.checked) lab.classList.add('wrong'); });
+    submit.hidden = true; $('.hint', wrap).hidden = true;
+    if (mode === 'train') {
+      const fb = $('.feedback', wrap); fb.hidden = false;
+      fb.innerHTML = `<p class="verdict ${ok ? 'ok' : 'no'}">${ok ? 'Верно' : timeout ? 'Время вышло' : 'Неверно'} · ${Math.round(secs)} с${secs > q.time ? ` (лимит ${q.time} с)` : ''}</p><div class="expl">${q.expl}</div><button class="btn primary next">Следующая задача</button>`;
+      $('.next', fb).focus();
+    }
+    onAnswer({ ok, chosen, secs, timeout: !!timeout, wrap });
+  }
+  submit.onclick = () => finish(false);
+  wrap.finish = finish;
+  wrap.keyHandler = e => {
+    if (answered) { if (e.key === 'Enter') { const n = $('.next', wrap); if (n) { e.preventDefault(); n.click(); } } return; }
+    const k = +e.key;
+    if (k >= 1 && k <= inputs.length) { const i = inputs[k - 1]; if (multi) i.checked = !i.checked; else i.checked = true; i.dispatchEvent(new Event('change')); }
+    if (e.key === 'Enter' && !submit.disabled) { e.preventDefault(); finish(false); }
+  };
+  stopTimer();
+  activeTimer = setInterval(() => {
+    const left = q.time - (performance.now() - t0) / 1000;
+    timerEl.textContent = mmss(left);
+    timerEl.classList.toggle('low', left < 15 && left >= 0);
+    timerEl.classList.toggle('over', left < 0);
+    if (left <= 0 && mode === 'exam') finish(true);
+  }, 250);
+  return wrap;
+}
+let currentCard = null;
+document.addEventListener('keydown', e => {
+  if (!currentCard || !document.body.contains(currentCard)) return;
+  if (['TEXTAREA', 'INPUT', 'SELECT'].includes(document.activeElement.tagName) && document.activeElement.type !== 'radio' && document.activeElement.type !== 'checkbox') return;
+  currentCard.keyHandler && currentCard.keyHandler(e);
+});
+
+/* ================= training ================= */
+const TR = { topic: 'all', n: 0, ok: 0, streak: 0 };
+function renderTrain(opts = {}) {
+  if (opts.topic) { TR.topic = opts.topic; TR.n = 0; TR.ok = 0; TR.streak = 0; }
+  const el = $('#v-train');
+  const chips = [['all', 'Все темы'], ...Object.entries(TOPICS).map(([k, v]) => [k, v.name]), ['mistakes', `Мои ошибки · ${S.mistakes.length}`]];
+  el.innerHTML = `
+    <div class="chips" role="tablist">${chips.map(([k, n]) => `<button class="chip" aria-pressed="${TR.topic === k}" data-tt="${k}">${n}</button>`).join('')}</div>
+    <div class="session"><span>Сессия: <b>${TR.ok}/${TR.n}</b> верно</span><span>Серия: <b>${TR.streak}</b></span>${TR.topic !== 'all' && TR.topic !== 'mistakes' ? `<button class="link" data-go="theory" data-topic="${TR.topic}">Теория по теме</button>` : ''}</div>
+    <div id="qhost"></div>`;
+  $$('[data-tt]', el).forEach(b => b.onclick = () => renderTrain({ topic: b.dataset.tt }));
+  nextTrain();
+}
+function nextTrain() {
+  const host = $('#qhost');
+  let q;
+  if (TR.topic === 'mistakes') {
+    if (!S.mistakes.length) { host.innerHTML = '<div class="empty"><p>Ошибок для разбора нет. Они появятся здесь после неверных ответов в тренировке и пробном тесте.</p><button class="btn primary" data-go="train" data-topic="all">Тренировать все темы</button></div>'; return; }
+    q = JSON.parse(JSON.stringify(S.mistakes[0]));
+  } else {
+    const t = TR.topic === 'all' ? weightedTopic() : TR.topic;
+    q = genTopic(t);
+  }
+  const card = questionCard(q, { label: TR.topic === 'mistakes' ? `Ошибка 1 из ${S.mistakes.length}` : `Задача ${TR.n + 1}`, mode: 'train', onAnswer: ({ ok, secs, wrap }) => {
+    TR.n++; if (ok) { TR.ok++; TR.streak++; } else TR.streak = 0;
+    record(q.topic, ok, secs);
+    if (TR.topic === 'mistakes') { const m = S.mistakes.shift(); if (!ok) S.mistakes.push(m); save(); }
+    else if (!ok) addMistake(q);
+    $('.session', document).innerHTML = `<span>Сессия: <b>${TR.ok}/${TR.n}</b> верно</span><span>Серия: <b>${TR.streak}</b></span>`;
+    $('.next', wrap).onclick = nextTrain;
+  } });
+  host.innerHTML = ''; host.appendChild(card); currentCard = card;
+}
+function addMistake(q) { S.mistakes = S.mistakes.filter(m => m.text !== q.text || m.html !== q.html); S.mistakes.push(q); if (S.mistakes.length > 60) S.mistakes.shift(); save(); }
+function weightedTopic() {
+  const ts = Object.keys(TOPICS);
+  const w = ts.map(t => { const st = topicStat(t); return st.n < 5 ? 3 : 1 + 3 * (1 - st.acc); });
+  let r = Math.random() * w.reduce((a, b) => a + b);
+  for (let i = 0; i < ts.length; i++) { r -= w[i]; if (r <= 0) return ts[i]; }
+  return ts[0];
+}
+
+/* ================= loaders ================= */
+const LIBS = { sql: ['https://cdn.jsdelivr.net/npm/sql.js@1.13.0/dist/sql-asm.js'] };
+function loadScript(src) { return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = () => rej(new Error('Не удалось загрузить ' + src)); document.head.appendChild(s); }); }
+
+/* ================= variant review ================= */
+function renderVariant() {
+  $('#v-variant').innerHTML = `
+    <div class="viewhead"><h2>Разбор присланного варианта</h2><p class="muted">20 вопросов теста BI-разработчика с ответами и объяснениями. Вопросы 13–20 относились к одному графику — его реконструкция ниже.</p></div>
+    ${stackedChart({ cats: ['Q1', 'Q3', 'Q2', 'Q4'], series: [{ name: 'Восток', color: SIMILAR[3], vals: [110, 174, 63, 104] }, { name: 'Запад', color: SIMILAR[2], vals: [110, 116, 105, 156] }, { name: 'Юг', color: SIMILAR[1], vals: [110, 116, 126, 104] }, { name: 'Север', color: SIMILAR[0], vals: [110, 174, 126, 156] }], yMin: 0, yMax: 600, ticks: [0, 100, 200, 300, 400, 500, 600], title: 'Квартальные продажи компании', yLabel: 'Объём продаж, млн руб.', xLabel: 'Квартал', h: 340, segLabel: (sr, i) => [sr.name, sr.vals[i] + ' млн'] })}
+    <ol class="review variant">${VARIANT.map(v => `<li class="ok"><div class="vq"><span class="rnum">${v.n}</span> ${esc(v.q)}</div><div class="va">${esc(v.a)}</div><div class="vw muted">${esc(v.w)}</div></li>`).join('')}</ol>
+    <div class="row gap wrap"><button class="btn primary" data-go="exam">Пройти пробный тест</button><button class="btn" data-go="theory" data-topic="viz">Чек-лист разбора графиков</button></div>`;
+}
+
+/* ================= SQL ================= */
+let SQLlib = null, sqlTask = SQLDATA.tasks[0].id; const CODE_TASKS = [];
+async function ensureSql() { if (!SQLlib) { for (const s of LIBS.sql) await loadScript(s); SQLlib = await window.initSqlJs(); } return SQLlib; }
+function freshDb() { const db = new SQLlib.Database(); db.run(SQLDATA.ddl); return db; }
+function lastResult(db, sql) { const r = db.exec(sql); return r.length ? r[r.length - 1] : { columns: [], values: [] }; }
+function normRow(row) { return row.map(v => v === null ? 'NULL' : typeof v === 'number' ? String(Math.round(v * 1e4) / 1e4) : String(v)).join('\u0001'); }
+function sameResult(a, b, ordered) {
+  if (a.values.length !== b.values.length) return 'Неверное число строк: ' + a.values.length + ' вместо ' + b.values.length + '.';
+  if ((a.columns.length || 0) !== (b.columns.length || 0) && b.values.length) return 'Неверное число столбцов: ' + a.columns.length + ' вместо ' + b.columns.length + '.';
+  const ra = a.values.map(normRow), rb = b.values.map(normRow);
+  if (!ordered) { ra.sort(); rb.sort(); }
+  for (let i = 0; i < ra.length; i++) if (ra[i] !== rb[i]) return ordered ? 'Строки совпадают не полностью или стоят в другом порядке.' : 'Значения в строках не совпадают с ожидаемыми.';
+  return '';
+}
+function tableHtml(r, limit = 50) {
+  if (!r.columns.length) return '<p class="muted">Запрос выполнен, строк нет.</p>';
+  return `<div class="tablewrap"><table class="data"><tr>${r.columns.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${r.values.slice(0, limit).map(row => `<tr>${row.map(v => `<td>${v === null ? '<span class="muted">NULL</span>' : esc(v)}</td>`).join('')}</tr>`).join('')}</table></div>${r.values.length > limit ? `<p class="muted">Показаны ${limit} из ${r.values.length} строк.</p>` : `<p class="muted">${r.values.length} ${plural(r.values.length, 'строка', 'строки', 'строк')}</p>`}`;
+}
+const SCHEMA = [
+  ['fact_orders', 'order_id, order_date, customer_id, product_id, qty, amount, status', 'заказы янв–июл 2026, в апреле заказов нет; status: paid, cancelled, returned'],
+  ['dim_customer', 'customer_id, name, region, segment, email', '20 клиентов, у троих email = NULL'],
+  ['dim_product', 'product_id, name, category, price', '12 товаров, один ни разу не продавался'],
+  ['raw_events', 'event_id, user_id, event_type, event_ts', 'сырые события с полными дублями строк']
+];
+function renderSql() {
+  const el = $('#v-sql');
+  el.innerHTML = `
+    <div class="viewhead"><h2>SQL-песочница</h2><p class="muted">Настоящая база SQLite в браузере со схемой «звезда»: факт заказов и измерения. Пиши запрос, запускай (Ctrl+Enter) и проверяй: результат сравнивается с эталоном по значениям, имена столбцов не важны. Даты в SQLite — strftime('%Y-%m', дата) вместо DATE_TRUNC.</p></div>
+    <details class="schema"><summary>Схема базы</summary><div class="tablewrap"><table class="data"><tr><th>Таблица</th><th>Столбцы</th><th>Что внутри</th></tr>${SCHEMA.map(s => `<tr><td class="mono">${s[0]}</td><td class="mono">${s[1]}</td><td>${s[2]}</td></tr>`).join('')}</table></div></details>
+    <div class="split"><nav class="side" id="sqllist" aria-label="Задачи"></nav><div id="sqlhost" class="minw"></div></div>`;
+  renderSqlList(); openSqlTask(sqlTask);
+}
+function renderSqlList() {
+  const l = $('#sqllist'); if (!l) return;
+  const lv = ['', 'база', 'средне', 'сложнее'];
+  l.innerHTML = SQLDATA.tasks.map((t, i) => `<button class="side-item" aria-current="${t.id === sqlTask}" data-sq="${t.id}"><span>${i + 1}. ${t.title}<small class="muted"> · ${lv[t.level]}</small></span>${S.sqlDone[t.id] ? '<span class="pill good">решено</span>' : ''}</button>`).join('');
+  $$('[data-sq]', l).forEach(b => b.onclick = () => { sqlTask = b.dataset.sq; renderSqlList(); openSqlTask(sqlTask); });
+}
+function openSqlTask(id) {
+  const t = SQLDATA.tasks.find(x => x.id === id), host = $('#sqlhost');
+  host.innerHTML = `
+    <div class="codecard sqlcard">
+      <h3>${t.title}</h3>
+      <p>${esc(t.text)}</p>
+      <textarea class="editor sql" id="sqled-${t.id}" spellcheck="false" autocapitalize="off">${esc(S.sqlCode[t.id] || 'SELECT * FROM fact_orders LIMIT 5;')}</textarea>
+      <div class="row gap wrap"><button class="btn run">▶ Выполнить</button><button class="btn primary check">Проверить</button><button class="btn ghost hintb">Подсказка</button><button class="btn ghost sol">Решение</button></div>
+      <div class="sqlmsg" aria-live="polite"></div>
+      <div class="sqlout"></div>
+    </div>`;
+  const ed = $('textarea', host), msg = $('.sqlmsg', host), out = $('.sqlout', host);
+  ed.addEventListener('input', () => { S.sqlCode[t.id] = ed.value; save(); });
+  ed.addEventListener('keydown', e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); $('.run', host).click(); } if (e.key === 'Tab') { e.preventDefault(); const s = ed.selectionStart; ed.value = ed.value.slice(0, s) + '  ' + ed.value.slice(ed.selectionEnd); ed.selectionStart = ed.selectionEnd = s + 2; } });
+  async function exec(check) {
+    msg.innerHTML = '<p class="muted">Загружаю SQLite…</p>';
+    try { await ensureSql(); } catch (e) { msg.innerHTML = '<p class="verdict no">Не удалось загрузить SQLite. Проверьте подключение к интернету.</p>'; return; }
+    const db = freshDb();
+    let r;
+    try { r = lastResult(db, ed.value); } catch (e) { msg.innerHTML = `<p class="verdict no">Ошибка SQL</p><pre class="err">${esc(e.message)}</pre>`; out.innerHTML = ''; db.close(); return; }
+    out.innerHTML = tableHtml(r);
+    if (check) {
+      const ref = lastResult(db, t.ref);
+      const diff = sameResult(r, ref, t.ordered);
+      if (!diff) { msg.innerHTML = '<p class="verdict ok">Верно — результат совпадает с эталоном.</p>'; S.sqlDone[t.id] = true; save(); renderSqlList(); }
+      else msg.innerHTML = `<p class="verdict no">Пока не совпадает. ${esc(diff)}</p><details><summary>Ожидаемый результат</summary>${tableHtml(ref, 20)}</details>`;
+    } else msg.innerHTML = '';
+    db.close();
+  }
+  $('.run', host).onclick = () => exec(false);
+  $('.check', host).onclick = () => exec(true);
+  $('.hintb', host).onclick = () => { msg.innerHTML = `<p class="note">${esc(t.hint)}</p>`; };
+  $('.sol', host).onclick = () => { msg.innerHTML = `<p class="olabel">Эталонный запрос</p><pre class="code">${esc(t.ref)}</pre>`; };
+}
+
+/* ================= exam ================= */
+const EXAM_BLOCKS = [
+  { name: 'SQL', from: 0, to: 6 },
+  { name: 'Выбор графика', from: 7, to: 9 },
+  { name: 'Критика графиков', from: 10, to: 19 }
+];
+const CODE_TIME = 300;
+const EX = { running: false, items: [], i: 0, results: [], t0: 0 };
+function buildExam() {
+  const seen = new Set();
+  return EXAM_LAYOUT.map(g => {
+    for (let k = 0; k < 40; k++) { const q = G[g](); if (!seen.has(q.text + q.html)) { seen.add(q.text + q.html); return q; } }
+    return G[g]();
+  });
+}
+function renderExam() {
+  const el = $('#v-exam');
+  if (EX.running) { showExamItem(); return; }
+  const last = S.exams[S.exams.length - 1];
+  el.innerHTML = `
+    <div class="examstart">
+      <p class="eyebrow">Генеральная репетиция</p>
+      <h2>Пробный тест: 20 задач</h2>
+      <p class="lead">Структура как в присланном тесте: 7 задач по SQL, 3 на выбор визуализации, 10 на разбор графиков. У каждой задачи свой таймер; вернуться к предыдущей нельзя. Когда время выходит, ответ отправляется автоматически.</p>
+      <ul class="facts"><li><b>~35 мин</b> на весь тест</li><li><b>1,5–4 мин</b> на задачу по SQL</li><li><b>1–2 мин</b> на график</li><li><b>18/20</b> — целевой результат</li></ul>
+      <p class="note">Задачи каждый раз новые.${last ? ` Прошлый результат: ${last.score}/20.` : ''}</p>
+      <button class="btn primary big" id="exam-go">Начать тест</button>
+      <p class="examload muted" aria-live="polite"></p>
+    </div>`;
+  $('#exam-go').onclick = () => {
+    Object.assign(EX, { running: true, items: buildExam(), i: 0, results: [], t0: performance.now() });
+    showExamItem();
+  };
+}
+function examProgress() { return `<div class="eprog"><span>Задание ${EX.i + 1} из 20</span><span class="ebar"><span style="width:${(EX.i / 20) * 100}%"></span></span><button class="link" id="exam-quit">Завершить досрочно</button></div><div class="leave" id="exam-leave" hidden>Тест прервётся, результат не сохранится. <button class="link danger" id="leave-yes">Выйти из теста</button> <button class="link" id="leave-no">Продолжить тест</button></div>`; }
+function showExamLeave() { const l = $('#exam-leave'); if (l) l.hidden = false; }
+function bindLeave() {
+  $('#exam-quit').onclick = () => { EX.pendingNav = null; showExamLeave(); };
+  $('#leave-no').onclick = () => { $('#exam-leave').hidden = true; EX.pendingNav = null; };
+  $('#leave-yes').onclick = () => { EX.running = false; stopTimer(); const p = EX.pendingNav; EX.pendingNav = null; if (p) go(p.view, p.opts); else renderExam(); };
+}
+function showExamItem() {
+  const el = $('#v-exam');
+  if (EX.i >= EX.items.length) return finishExam();
+  const it = EX.items[EX.i];
+  el.innerHTML = examProgress() + '<div id="ehost"></div>';
+  bindLeave();
+  const host = $('#ehost');
+  const advance = () => { EX.i++; showExamItem(); };
+  const card = questionCard(it, { label: `Задание ${EX.i + 1} из 20`, mode: 'exam', onAnswer: ({ ok, chosen, secs, timeout }) => {
+    EX.results.push({ q: it, ok, chosen, secs, timeout });
+    record(it.topic, ok, secs);
+    if (!ok) addMistake(it);
+    setTimeout(advance, timeout ? 600 : 250);
+  } });
+  $('.submit', card).textContent = 'Отправить ответ';
+  host.appendChild(card); currentCard = card;
+}
+function finishExam() {
+  EX.running = false; stopTimer(); currentCard = null;
+  const secs = (performance.now() - EX.t0) / 1000;
+  const score = EX.results.filter(r => r.ok).length;
+  const blocks = EXAM_BLOCKS.map(b => EX.results.slice(b.from, b.to + 1).filter(r => r.ok).length);
+  const d = new Date();
+  S.exams.push({ date: d.toLocaleDateString('ru-RU') + ' ' + d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }), score, secs: Math.round(secs), blocks });
+  if (S.exams.length > 30) S.exams.shift();
+  save();
+  const el = $('#v-exam');
+  const verdict = score >= 18 ? 'Уровень цели — можно идти на тест.' : score >= 15 ? 'Близко к цели. Добери слабые блоки и повтори через день.' : 'Пока рано: пройди тренировки по слабым темам и повтори пробный тест.';
+  el.innerHTML = `
+    <div class="examres">
+      <p class="eyebrow">Результат пробного теста</p>
+      <div class="score"><span class="big">${score}</span><span class="of">/ 20</span></div>
+      <p class="lead">${verdict} Время: ${mmss(secs)}.</p>
+      <div class="tablewrap"><table class="data"><tr><th>Блок</th><th>Верно</th><th></th></tr>${EXAM_BLOCKS.map((b, i) => { const n = b.to - b.from + 1, r = blocks[i] / n; return `<tr><td>${b.name}</td><td>${blocks[i]}/${n}</td><td class="barcell"><span class="bar"><span class="${r >= 0.85 ? 'good' : r >= 0.7 ? 'mid' : 'bad'}" style="width:${r * 100}%"></span></span></td></tr>`; }).join('')}</table></div>
+      <div class="row gap wrap"><button class="btn primary" id="exam-again">Пройти ещё раз</button><button class="btn" data-go="train" data-topic="mistakes">Разобрать ошибки</button><button class="btn ghost" data-go="plan">К плану</button></div>
+      <h3 class="sec">Разбор</h3>
+      <ol class="review">${EX.results.map((r, i) => `
+        <li class="${r.ok ? 'ok' : 'no'}"><details><summary><span class="rnum">${i + 1}</span> ${r.ok ? 'Верно' : r.timeout ? 'Время вышло' : 'Неверно'} · ${esc(r.q.text.length > 90 ? r.q.text.slice(0, 90) + '…' : r.q.text)} · ${Math.round(r.secs)} с</summary>
+        ${r.q.html || ''}<ul class="ans">${r.q.options.map((o, k) => `<li class="${r.q.correct.includes(k) ? 'right' : r.chosen.includes(k) ? 'wrong' : ''}">${esc(o)}${r.chosen.includes(k) ? ' <span class="muted">· ваш ответ</span>' : ''}</li>`).join('')}</ul><div class="expl">${r.q.expl}</div></details></li>`).join('')}</ol>
+    </div>`;
+  $('#exam-again').onclick = () => renderExam();
+}
+
+/* ================= boot ================= */
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-go]');
+  if (!b) return;
+  e.preventDefault();
+  go(b.dataset.go, { topic: b.dataset.topic });
+});
+$$('.nav button').forEach(b => b.addEventListener('click', () => go(b.dataset.view)));
+go((location.hash || '').replace('#', '') || 'plan');
+
+</script>
+
+</body></html>
